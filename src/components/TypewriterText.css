@@ -1,0 +1,41 @@
+/* src/components/TypewriterText.css */
+/* Main container for the TextType component */
+.text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+    overflow: hidden;
+    border-right: 1px solid transparent; /* Thinner default border for the typing effect */
+    animation: typing-initial-delay 0.1s steps(1) forwards;
+}
+
+/* Styles for the actual typed content */
+.text-type__content {
+    display: inline-block;
+    font-size: 1rem; /* Default small size */
+    font-weight: normal;
+    color: inherit;
+    line-height: inherit;
+}
+
+/* Styles for the blinking cursor */
+.text-type__cursor {
+    margin-left: 0px !important; /* FORCED: Reduce space between text and cursor to minimum */
+    display: inline-block;
+    opacity: 1;
+    vertical-align: middle;
+    font-size: 1rem; /* Default small size */
+    color: inherit;
+    border-right: 2px solid; /* Keep 2px border thickness for cursor itself */
+}
+
+/* Class to hide cursor when typing is complete or during hideWhileTyping */
+.text-type__cursor--hidden {
+    opacity: 0 !important;
+    border-color: transparent !important;
+}
+
+/* Keyframes for the typing effect */
+@keyframes typing-initial-delay {
+    from { width: 0; }
+    to { width: 100%; }
+}

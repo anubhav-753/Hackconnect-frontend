@@ -1,0 +1,51 @@
+/* src/layouts/Footer.css */
+.footer {
+    background-color: var(--text-dark); /* Dark background */
+    color: #fff;
+    padding: 2rem 0;
+    margin-top: auto; /* Pushes footer to bottom of flex container */
+}
+
+.footer-container {
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 1.25rem; /* xl equivalent */
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+    font-size: 0.875rem; /* sm equivalent */
+    margin-bottom: 1rem;
+    color: var(--text-light); /* Lighter gray for tagline */
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.footer-link {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+.footer-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.footer-link-separator {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.footer-copyright {
+    font-size: 0.75rem; /* xs equivalent */
+    color: var(--text-light);
+    margin-top: 1rem; /* Space from links */
+}

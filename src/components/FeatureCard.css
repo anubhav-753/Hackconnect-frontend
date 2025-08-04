@@ -1,0 +1,36 @@
+/* src/components/FeatureCard.css */
+.feature-card {
+    background-color: #fff;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect on hover */
+}
+
+.feature-icon {
+    font-size: 3.5rem; /* Large icon size */
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    line-height: 1; /* Ensure no extra space around icon */
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+}
+
+.feature-description {
+    font-size: 1rem;
+    color: var(--text-medium);
+    line-height: 1.6;
+}

@@ -1,0 +1,229 @@
+/* src/pages/HomePage.css */
+.homepage-section {
+  display: flex; /* Use flexbox for main section layout */
+  flex-direction: column; /* Stack vertically on small screens */
+  align-items: center; /* Center items on small screens */
+  justify-content: center;
+  min-height: calc(100vh - 80px); /* Adjust height for Navbar */
+  background-color: #1a1a2e; /* Dark background color */
+  padding: 2rem 1rem; /* Responsive padding */
+  text-align: center; /* Center text by default, adjusted per column */
+  color: #fff; /* Default text color */
+  position: relative; /* For absolute positioning of visuals if needed */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+/* Left side content for text (HackConnect & Tagline) */
+.homepage-text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center text content on small screens */
+  text-align: center; /* Center text inside this column */
+  width: 100%; /* Take full width on small screens */
+  max-width: 600px; /* Constrain max width for readability */
+  margin-bottom: 2rem; /* Space between text and visuals on stacked layout */
+}
+
+/* Styles for the "HackConnect" (main-brand-typewriter) instance of TypewriterText */
+.main-brand-typewriter .text-type__content {
+  font-size: 6rem !important; /* FORCED: VERY BIG base font size for HackConnect */
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  color: var(--primary-blue) !important; /* FORCED */
+}
+.main-brand-typewriter .text-type__cursor {
+  font-size: 6rem !important; /* FORCED: Match text size */
+  color: var(--primary-blue) !important; /* FORCED */
+  border-right-color: var(--primary-blue) !important; /* FORCED */
+  margin-left: 0.05rem !important; /* FORCED: Reduce space */
+}
+
+/* Styles for the "Find your teammates..." (tagline) TypewriterText instance */
+.homepage-tagline-typewriter {
+  margin-top: 1rem; /* Space from HackConnect title */
+  margin-bottom: 2rem; /* Space before buttons */
+}
+
+.homepage-tagline-typewriter .text-type__content {
+  font-size: 3rem !important; /* FORCED: BIGGER base font for tagline */
+  font-weight: 800 !important;
+  color: #ffffff !important; /* FORCED: White text */
+  line-height: 1.2 !important;
+}
+.homepage-tagline-typewriter .text-type__cursor {
+  font-size: 3rem !important; /* FORCED: Match tagline text size */
+  color: #ffffff !important; /* FORCED: White cursor */
+  border-right-color: #ffffff !important; /* FORCED */
+  margin-left: 0.05rem !important; /* FORCED: Reduce space */
+}
+
+/* Call to Action Buttons */
+.homepage-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.homepage-buttons.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.homepage-button {
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-size: 1.25rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn {
+  background-color: var(--primary-blue);
+  color: #fff;
+}
+.primary-btn:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.secondary-btn {
+  background-color: #fff;
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
+}
+.secondary-btn:hover {
+  background-color: var(--primary-blue);
+  color: #fff;
+}
+
+/* Right side: Placeholder for 3D Visual Object */
+.homepage-visuals {
+  width: 100%;
+  min-height: 200px;
+  background-color: rgba(0, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rounded-md);
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments for two-column layout and text sizing */
+@media (min-width: 768px) {
+  .homepage-section {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      padding: 4rem;
+      justify-content: space-between;
+  }
+
+  .homepage-text-content {
+      align-items: flex-start;
+      text-align: left;
+      width: 50%;
+      max-width: 600px;
+      margin-bottom: 0;
+      padding-right: 2rem;
+  }
+
+  .homepage-buttons {
+      flex-direction: row;
+      max-width: none;
+      width: auto;
+  }
+
+  .homepage-visuals {
+      width: 50%;
+      min-height: 400px;
+  }
+
+  /* Responsive font sizes for text */
+  .main-brand-typewriter .text-type__content,
+  .main-brand-typewriter .text-type__cursor {
+      font-size: 7.5rem !important; /* FORCED: Even BIGGER on medium screens */
+  }
+  .homepage-tagline-typewriter .text-type__content,
+  .homepage-tagline-typewriter .text-type__cursor {
+      font-size: 3.5rem !important; /* FORCED: Larger for tagline */
+  }
+}
+
+@media (min-width: 1024px) {
+  .homepage-section {
+      padding-left: 6rem;
+      padding-right: 4rem;
+      align-items: flex-start;
+  }
+  .main-brand-typewriter .text-type__content,
+  .main-brand-typewriter .text-type__cursor {
+      font-size: 9rem !important; /* FORCED: MASSIVE on large screens */
+  }
+  .homepage-tagline-typewriter .text-type__content,
+  .homepage-tagline-typewriter .text-type__cursor {
+      font-size: 4.5rem !important; /* FORCED: Even larger for tagline */
+  }
+}
+
+/* Important: Set max-width on content to leave space for 3D object */
+/* This will ensure the text doesn't flow too far right, leaving space for 3D object */
+.homepage-section > h1, /* Targeting the direct children TypewriterText components */
+.homepage-section > h2 {
+  max-width: 600px; /* Adjust this value based on how much space you want for text vs 3D object */
+  width: 100%; /* Ensure it respects max-width */
+}
+/* Also apply to the text content itself within the typewriter component */
+.homepage-section .text-type__content {
+  max-width: 100%; /* Ensure content stays within its container */
+  display: inline-block; /* Keep inline-block as it's typing */
+}
+
+/* src/pages/HomePage.css - Add at the end */
+
+/* Features Section */
+.features-section {
+  background-color: #f0f4f8; /* Light background for contrast */
+  padding: 5rem 1rem; /* Generous padding */
+  text-align: center;
+  color: var(--text-dark);
+}
+
+.features-section .section-heading {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.features-section .section-subheading {
+  font-size: 1.25rem;
+  color: var(--text-medium);
+  margin-bottom: 3.5rem; /* Space before grid */
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Stack on small screens */
+  gap: 2rem; /* Space between cards */
+}
+
+/* Responsive adjustments for features grid */
+@media (min-width: 768px) {
+  .features-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+      max-width: 900px;
+      margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .features-grid {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+      max-width: 1200px;
+  }
+}

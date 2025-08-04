@@ -1,0 +1,60 @@
+/* src/pages/ChatPage.css */
+.chat-page {
+    padding: 4rem 1rem;
+    background-color: var(--bg-light);
+    min-height: calc(100vh - 80px - 200px); /* Adjust min-height */
+}
+
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.chat-page .page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.chat-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-medium);
+    margin-bottom: 3rem;
+}
+
+.chat-placeholder-box {
+    background-color: #fff;
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+}
+.chat-placeholder-box h3 {
+    font-size: 1.8rem;
+    color: var(--primary-blue);
+    margin-bottom: 1.5rem;
+}
+.chat-placeholder-box p {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+.chat-placeholder-box ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 2rem;
+    text-align: left; /* Align list items to left */
+    color: var(--text-medium);
+}
+.chat-placeholder-box li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.chat-placeholder-note {
+    font-size: 0.9rem;
+    color: #ef4444; /* Red color for warning */
+    font-weight: 500;
+    margin-top: 1.5rem;
+}

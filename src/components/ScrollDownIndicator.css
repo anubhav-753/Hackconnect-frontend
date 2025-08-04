@@ -1,0 +1,62 @@
+/* src/components/ScrollDownIndicator.css */
+.scroll-down-indicator {
+    position: absolute;
+    bottom: 30px; /* Position from the bottom of the homepage-section */
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    z-index: 10; /* Ensure it's above other content */
+}
+
+.scroll-down-indicator:hover {
+    opacity: 1;
+}
+
+.mouse-icon {
+    width: 26px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.7); /* White border, slightly transparent */
+    border-radius: 13px;
+    position: relative;
+    margin-bottom: 8px; /* Space between mouse and arrow */
+}
+
+.scroll-wheel {
+    width: 4px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scroll-wheel-animation 1.5s infinite; /* Animation */
+}
+
+.arrow-down-icon {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid rgba(255, 255, 255, 0.7); /* White arrow */
+    animation: arrow-down-animation 1.5s infinite; /* Animation */
+}
+
+/* Animations */
+@keyframes scroll-wheel-animation {
+    0% { top: 6px; opacity: 1; }
+    50% { top: 18px; opacity: 0; }
+    100% { top: 6px; opacity: 1; }
+}
+
+@keyframes arrow-down-animation {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 1; }
+}

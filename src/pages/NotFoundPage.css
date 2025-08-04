@@ -1,0 +1,49 @@
+/* src/pages/NotFoundPage.css */
+.not-found-page {
+    background-color: var(--bg-light);
+    min-height: calc(100vh - 80px - 200px); /* Adjust to fill space above footer */
+    display: flex; /* Ensure flex-center works */
+    flex-direction: column; /* Ensure flex-center works vertically */
+    align-items: center; /* Ensure flex-center works horizontally */
+    justify-content: center; /* Ensure flex-center works vertically */
+}
+
+.not-found-content {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+}
+
+.not-found-title {
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    line-height: 1; /* Remove extra line height */
+}
+
+.not-found-message {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+.not-found-home-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-align: center;
+    display: inline-block; /* Ensure button padding works */
+    box-shadow: var(--shadow-md);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .not-found-title {
+        font-size: 12rem;
+    }
+    .not-found-message {
+        font-size: 1.8rem;
+    }
+}

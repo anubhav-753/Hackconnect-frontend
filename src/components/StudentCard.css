@@ -1,0 +1,117 @@
+/* src/components/StudentCard/StudentCard.css */
+.student-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md); /* Added shadow */
+    transition: transform 0.2s ease-in-out; /* Added hover effect */
+}
+
+.student-card:hover {
+    transform: translateY(-3px); /* Subtle lift on hover */
+}
+
+.student-profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-blue);
+    margin-bottom: 1rem;
+}
+
+.student-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+}
+
+.student-details {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    margin-bottom: 0.75rem;
+}
+
+.student-skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.skill-tag {
+    background-color: #e0f2fe; /* Light blue background */
+    color: var(--primary-blue);
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px; /* Full rounded */
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.student-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.status-available {
+    color: #10b981; /* Green */
+}
+.status-in-team {
+    color: #ef4444; /* Red */
+}
+
+.student-card-actions {
+    display: flex;
+    flex-direction: column; /* Stack buttons on small cards */
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.view-profile-btn {
+    background-color: var(--border-color); /* Light gray background */
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    border-radius: var(--rounded-md);
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Ensure padding applies correctly */
+    text-decoration: none; /* Remove underline */
+}
+.view-profile-btn:hover {
+    background-color: #d1d5db; /* Darker gray on hover */
+}
+
+.send-request-btn {
+    background-color: var(--primary-blue);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    border-radius: var(--rounded-md);
+    transition: background-color 0.3s ease;
+}
+.send-request-btn:hover {
+    background-color: var(--primary-blue-dark);
+}
+
+/* Styles for the "Request Sent!" (disabled) state */
+.student-card-actions .send-request-btn.sent-disabled {
+    background-color: #ccc; /* Lighter gray background */
+    color: #666; /* Darker text color */
+    cursor: not-allowed; /* No-go cursor */
+    box-shadow: none; /* Remove shadow */
+    pointer-events: none; /* Ensure no interaction */
+}
+
+@media (min-width: 640px) { /* sm breakpoint - for larger cards */
+    .student-card-actions {
+        flex-direction: row; /* Buttons side-by-side */
+        justify-content: center;
+    }
+}

@@ -1,0 +1,172 @@
+/* src/pages/TeamMakerPage.css */
+.team-maker-page {
+    padding: 4rem 1rem;
+    background-color: var(--bg-light);
+}
+
+.team-maker-page .page-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 2.5rem;
+}
+
+.team-maker-form-card {
+    background-color: #fff;
+    padding: 1rem; /* Significantly reduced padding */
+    margin-bottom: 2.5rem; /* Reduced margin from bottom of the card */
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+}
+
+.form-title {
+    font-size: 1.6rem; /* Slightly reduced form title font size */
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem; /* Reduced space below form title */
+    text-align: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column by default */
+    gap: 1rem; /* Reduced gap between form groups */
+    margin-bottom: 1rem; /* Reduced space below grid */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 0.85rem; /* Slightly smaller label font size */
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.4rem; /* Reduced space below label */
+}
+
+.form-select,
+.form-input {
+    padding: 0.6rem 0.8rem; /* Reduced padding for inputs/selects */
+    border: 1px solid var(--border-color);
+    border-radius: var(--rounded-md);
+    font-size: 0.95rem; /* Slightly smaller input font size */
+    color: var(--text-dark);
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.form-select:focus,
+.form-input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    outline: none;
+}
+
+/* REINTRODUCED AND MODIFIED: Styles for Skills Checkbox Group */
+.form-group-skills {
+    /* This rule was removed, now re-added for the checkbox group container */
+    grid-column: 1 / -1; /* Spans full width on all screen sizes */
+}
+
+.skills-checkbox-group {
+    display: flex;
+    flex-wrap: wrap; /* Allows checkboxes to wrap */
+    gap: 0.5rem; /* Reduced space between checkboxes */
+    padding: 0.5rem 0.75rem; /* Reduced padding inside the box */
+    border: 1px solid var(--border-color);
+    border-radius: var(--rounded-md);
+    background-color: #fff;
+    /* Make it scrollable and compact */
+    max-height: 100px; /* Fixed height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.skill-checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0.2rem 0;
+    white-space: nowrap; /* Prevent label text from wrapping prematurely */
+}
+
+.form-checkbox {
+    margin-right: 0.4rem;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+}
+
+
+.form-actions {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-submit-btn {
+    padding: 0.6rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    box-shadow: var(--shadow-md);
+    background-color: var(--primary-blue);
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+.form-submit-btn:hover {
+    background-color: var(--primary-blue-dark);
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+.student-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.no-results-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-medium);
+    margin-top: 2rem;
+    grid-column: 1 / -1;
+}
+
+
+/* Responsive styles for TeamMakerPage */
+@media (min-width: 640px) { /* sm breakpoint */
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+    /* Make skills section behave as a normal column on wider screens */
+    .form-group-skills {
+        grid-column: auto;
+    }
+    .student-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+    .form-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.8rem;
+    }
+    .student-card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
