@@ -1,53 +1,36 @@
-// src/pages/SignupPage.jsx
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // NEW: Import useNavigate
-import "./AuthPage.css";
-import { useAuth } from "../contexts/AuthContext"; // NEW: Import useAuth
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./AuthPage.css"; // Assuming you reuse the same CSS as the login page
 
 function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { signup } = useAuth(); // NEW: Get signup function from context
-  const navigate = useNavigate(); // NEW: Get navigate function
+  const { signup } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    // Made async
     e.preventDefault();
     setMessage("");
-
-    if (!name || !email || !password || !confirmPassword) {
-      setMessage("All fields are required.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match.");
-      return;
-    }
-    if (password.length < 6) {
-      setMessage("Password must be at least 6 characters long.");
-      return;
-    }
-
     try {
-      await signup(name, email, password); // Call signup function from context
-      setMessage("Account created successfully! Redirecting to login...");
-      // Redirect to login page after successful signup
-      setTimeout(() => {
-        // Small delay for message to be seen
-        navigate("/login");
-      }, 1500);
+      await signup(name, email, password);
+      // On success, the AuthContext handles the user state and token.
+      // We can now redirect to the user's new profile page.
+      navigate("/profile");
     } catch (err) {
-      setMessage(err.message || "Signup failed. Please try again.");
+      // Display the actual error message from the backend API
+      const errorMessage =
+        err.response?.data?.message || "Signup failed. Please try again.";
+      setMessage(errorMessage);
     }
   };
 
   return (
     <div className="page-section auth-page flex-center">
       <div className="auth-card shadow-md rounded-md">
-        <h1 className="auth-title">Create Your HackConnect Account</h1>
+        <h1 className="auth-title">Create Your Account</h1>
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name" className="form-label">
@@ -56,9 +39,8 @@ function SignupPage() {
             <input
               type="text"
               id="name"
-              name="name"
               className="form-input"
-              placeholder="Your Full Name"
+              placeholder="e.g., Sita Devi"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -71,7 +53,6 @@ function SignupPage() {
             <input
               type="email"
               id="email"
-              name="email"
               className="form-input"
               placeholder="your.email@example.com"
               value={email}
@@ -86,39 +67,15 @@ function SignupPage() {
             <input
               type="password"
               id="password"
-              name="password"
               className="form-input"
-              placeholder="********"
+              placeholder="Minimum 6 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirm Password:
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="form-input"
-              placeholder="********"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
 
-          {message && (
-            <p
-              className={`auth-message ${
-                message.includes("successfully") ? "success" : "error"
-              }`}
-            >
-              {message}
-            </p>
-          )}
+          {message && <p className="auth-message error">{message}</p>}
 
           <div className="form-actions">
             <button

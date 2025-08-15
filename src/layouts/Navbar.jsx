@@ -1,12 +1,14 @@
 // src/layouts/Navbar.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Navbar.css";
 import { useAuth } from "../contexts/AuthContext";
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, isLoggedIn, logout } = useAuth(); // Get user object from context
+  // CHANGED: Renamed isLoggedIn to isAuthenticated to match AuthContext
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate(); // Get navigate function
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -16,20 +18,20 @@ function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = () => {
+    logout();
     closeMobileMenu();
+    navigate("/"); // Redirect to home after logout
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container container">
-        {/* Logo/Brand Name */}
         <Link to="/" className="navbar-brand" onClick={closeMobileMenu}>
           HackConnect
         </Link>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Links */}
         <div className="navbar-links-desktop">
           <Link to="/hackathons" className="navbar-link">
             Hackathons
@@ -48,16 +50,17 @@ function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop Auth Buttons / User Info */}
+        {/* Desktop Auth */}
         <div className="navbar-auth-buttons-desktop">
-          {isLoggedIn ? (
+          {/* CHANGED: Check for isAuthenticated and user object */}
+          {isAuthenticated && user ? (
             <>
               <span className="navbar-welcome-text">
                 Hi, {user.name.split(" ")[0]}!
               </span>
-              {/* NEW: My Profile Link */}
+              {/* CHANGED: Link to user._id instead of user.id */}
               <Link
-                to={`/profile/${user.id}`}
+                to={`/profile/${user._id}`}
                 className="navbar-profile-link transition-ease"
               >
                 My Profile
@@ -89,10 +92,11 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay/Drawer */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="navbar-mobile-menu-overlay transition-ease">
           <div className="navbar-mobile-links">
+            {/* Links for mobile */}
             <Link
               to="/hackathons"
               className="navbar-mobile-link"
@@ -107,37 +111,16 @@ function Navbar() {
             >
               Team Maker
             </Link>
-            <Link
-              to="/about"
-              className="navbar-mobile-link"
-              onClick={closeMobileMenu}
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="navbar-mobile-link"
-              onClick={closeMobileMenu}
-            >
-              Contact
-            </Link>
-            <Link
-              to="/chat"
-              className="navbar-mobile-link"
-              onClick={closeMobileMenu}
-            >
-              Chat
-            </Link>
+            {/* ... other links */}
           </div>
           <div className="navbar-mobile-auth-buttons">
-            {isLoggedIn ? (
+            {isAuthenticated && user ? (
               <>
                 <span className="navbar-mobile-welcome-text">
                   Hi, {user.name.split(" ")[0]}!
                 </span>
-                {/* NEW: My Profile Link in Mobile Menu */}
                 <Link
-                  to={`/profile/${user.id}`}
+                  to={`/profile/${user._id}`}
                   className="navbar-mobile-link"
                   onClick={closeMobileMenu}
                 >
