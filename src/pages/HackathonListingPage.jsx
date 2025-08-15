@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getAllHackathons } from "../services/hackathonService";
+import { useAuth } from "../contexts/AuthContext";
 import HackathonCard from "../components/HackathonCard";
 import LoadingSpinner from "../components/LoadingSpinner";
-import "./HackathonListingPage.css"; // Add a CSS file for page layout
+import "./HackathonListingPage.css";
 
 function HackathonListingPage() {
   const [ongoingHackathons, setOngoingHackathons] = useState([]);
   const [upcomingHackathons, setUpcomingHackathons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchAndCategorizeHackathons = async () => {
       try {
-        // The backend now sends only active and sorted hackathons
         const response = await getAllHackathons();
         const allActiveHackathons = response.data;
-
-        // We can categorize them on the frontend based on their status
         const ongoing = allActiveHackathons.filter(
           (h) => h.status === "ongoing"
         );
         const upcoming = allActiveHackathons.filter(
           (h) => h.status === "upcoming"
         );
-
         setOngoingHackathons(ongoing);
         setUpcomingHackathons(upcoming);
       } catch (err) {
@@ -34,7 +33,6 @@ function HackathonListingPage() {
         setLoading(false);
       }
     };
-
     fetchAndCategorizeHackathons();
   }, []);
 
@@ -45,10 +43,17 @@ function HackathonListingPage() {
   return (
     <div className="page-section">
       <div className="container">
-        {/* Section for Ongoing Hackathons */}
+        <div className="page-header">
+          <h1 className="page-title">Discover Hackathons</h1>
+          {isAuthenticated && (
+            <Link to="/create-hackathon" className="primary-btn">
+              + Create Hackathon
+            </Link>
+          )}
+        </div>
         {ongoingHackathons.length > 0 && (
           <section className="hackathon-category">
-            <h1 className="category-title">🚀 Ongoing Hackathons</h1>
+            <h2 className="category-title">🚀 Ongoing Hackathons</h2>
             <div className="hackathon-list">
               {ongoingHackathons.map((hackathon) => (
                 <HackathonCard key={hackathon._id} hackathon={hackathon} />
@@ -56,11 +61,9 @@ function HackathonListingPage() {
             </div>
           </section>
         )}
-
-        {/* Section for Upcoming Hackathons */}
         {upcomingHackathons.length > 0 && (
           <section className="hackathon-category">
-            <h1 className="category-title">🗓️ Upcoming Hackathons</h1>
+            <h2 className="category-title">🗓️ Upcoming Hackathons</h2>
             <div className="hackathon-list">
               {upcomingHackathons.map((hackathon) => (
                 <HackathonCard key={hackathon._id} hackathon={hackathon} />
@@ -68,14 +71,12 @@ function HackathonListingPage() {
             </div>
           </section>
         )}
-
-        {/* Message if no active hackathons are found */}
         {!loading &&
           ongoingHackathons.length === 0 &&
           upcomingHackathons.length === 0 && (
             <div className="no-hackathons-found">
-              <h2>No active hackathons at the moment.</h2>
-              <p>Check back later or be the first to create a new one!</p>
+              <h2>No active hackathons found.</h2>
+              <p>Check back later or create a new one!</p>
             </div>
           )}
       </div>

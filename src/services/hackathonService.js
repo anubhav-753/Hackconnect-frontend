@@ -5,7 +5,6 @@ export const getAllHackathons = () => {
   return api.get('/hackathons');
 };
 
-// --- NEW FUNCTION ADDED HERE ---
 // Get a single hackathon by its ID (Public)
 export const getHackathonById = (id) => {
   return api.get(`/hackathons/${id}`);

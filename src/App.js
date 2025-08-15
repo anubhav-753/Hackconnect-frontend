@@ -1,11 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext'; // Make sure this is imported
+import { AuthProvider } from './contexts/AuthContext';
 
+// Import Layouts
 import Navbar from './layouts/Navbar';
 import Footer from './layouts/Footer';
+
+// Import Pages
 import HomePage from './pages/HomePage';
 import HackathonListingPage from './pages/HackathonListingPage';
+import HackathonDetailPage from './pages/HackathonDetailPage'; // NEW
+import CreateHackathonPage from './pages/CreateHackathonPage'; // NEW
+import EditHackathonPage from './pages/EditHackathonPage'; // NEW
 import TeamMakerPage from './pages/TeamMakerPage';
 import UserProfilePage from './pages/UserProfilePage';
 import AboutPage from './pages/AboutPage';
@@ -17,7 +23,6 @@ import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
-    // AuthProvider must wrap the Router so all pages have access to the auth context
     <AuthProvider>
       <Router>
         <div className="app-container">
@@ -26,15 +31,11 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/hackathons" element={<HackathonListingPage />} />
+              <Route path="/hackathons/:id" element={<HackathonDetailPage />} />
+              <Route path="/create-hackathon" element={<CreateHackathonPage />} />
+              <Route path="/hackathons/edit/:id" element={<EditHackathonPage />} />
               <Route path="/team-maker" element={<TeamMakerPage />} />
-              
-              {/* This route is for viewing ANY user's profile by their ID */}
               <Route path="/profile/:id" element={<UserProfilePage />} />
-              
-              {/* It's also good practice to have a route for the LOGGED-IN user's own profile */}
-              {/* You would need to create a ProtectedRoute component for this */}
-              {/* <Route path="/profile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} /> */}
-
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/login" element={<LoginPage />} />

@@ -1,35 +1,8 @@
-.hackathon-category {
-    margin-bottom: 4rem;
-  }
-  
-  .category-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 1rem;
-  }
-  
-  .hackathon-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-  }
-  
-  .no-hackathons-found {
-    text-align: center;
-    padding: 4rem 1rem;
-    background-color: #f9fafb;
-    border-radius: 8px;
-  }
-  
-  .no-hackathons-found h2 {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  
-  .no-hackathons-found p {
-    font-size: 1.125rem;
-    color: #666;
-    margin-top: 0.5rem;
-  }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; }
+.page-title { font-size: 2.5rem; font-weight: 800; }
+.hackathon-category { margin-bottom: 4rem; }
+.category-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem; }
+.hackathon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+.no-hackathons-found { text-align: center; padding: 4rem 1rem; background-color: #f9fafb; border-radius: 8px; }
+.no-hackathons-found h2 { font-size: 2rem; font-weight: 700; }
+.no-hackathons-found p { font-size: 1.125rem; color: #666; margin-top: 0.5rem; }

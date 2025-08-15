@@ -7,55 +7,11 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  
-  .card-content {
-    padding: 1.5rem;
-  }
-  
-  .card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: #333;
-  }
-  
-  .card-description {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
-  
-  .card-details p {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 0.5rem;
-  }
-  
-  .card-themes {
-    margin-top: 1rem;
-  }
-  
-  .theme-badge {
-    display: inline-block;
-    background-color: #e0e7ff;
-    color: #4f46e5;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .card-actions {
-    background-color: #f9fafb;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #e5e7eb;
-  }
-  
-  .details-btn {
-    text-align: center;
-    width: 100%;
-    display: block;
-  }
+  .card-content { padding: 1.5rem; }
+  .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; color: #333; }
+  .card-description { font-size: 1rem; color: #666; margin-bottom: 1rem; line-height: 1.5; }
+  .card-details p { font-size: 0.9rem; color: #555; margin-bottom: 0.5rem; }
+  .card-themes { margin-top: 1rem; }
+  .theme-badge { display: inline-block; background-color: #e0e7ff; color: #4f46e5; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+  .card-actions { background-color: #f9fafb; padding: 1rem 1.5rem; border-top: 1px solid #e5e7eb; }
+  .details-btn { text-align: center; width: 100%; display: block; }
