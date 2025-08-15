@@ -1,187 +1,35 @@
-/* src/pages/HackathonListingPage.css */
-.hackathon-listing-page {
-    padding: 4rem 1rem;
-    background-color: var(--bg-light);
-}
-
-.hackathon-listing-page .page-title {
-    text-align: center;
-    font-size: 3rem;
+.hackathon-category {
+    margin-bottom: 4rem;
+  }
+  
+  .category-title {
+    font-size: 2.5rem;
     font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: 1.5rem;
-}
-
-.hackathon-listing-page .page-description {
-    text-align: center;
-    font-size: 1.125rem;
-    color: var(--text-medium);
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* NEW: Search and Type Filters Bar */
-.hackathon-filters-bar {
-    display: flex;
-    flex-direction: column; /* Stack on small screens */
-    gap: 1rem;
-    margin-bottom: 1.5rem; /* Space between filter bar and status buttons */
-    max-width: 900px; /* Constrain width */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 1rem; /* Inner padding */
-}
-
-.filter-search-input,
-.filter-type-select {
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--rounded-md);
-    font-size: 1rem;
-    color: var(--text-dark);
-    background-color: #fff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    width: 100%; /* Take full width */
-}
-.filter-search-input:focus,
-.filter-type-select:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-    outline: none;
-}
-
-
-/* Status Filter Buttons Section */
-.filter-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 1rem;
-    background-color: #fff;
-    color: var(--text-medium);
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-.filter-btn:hover {
-    background-color: var(--primary-blue-dark);
-    color: #fff;
-    border-color: var(--primary-blue-dark);
-}
-.filter-btn.active-filter {
-    background-color: var(--primary-blue);
-    color: #fff;
-    border-color: var(--primary-blue);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Hackathon Grid and Card Styles */
-.hackathon-grid {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 1rem;
+  }
+  
+  .hackathon-list {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-
-.hackathon-card {
-    background-color: #fff;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    border: 1px solid var(--border-color);
-}
-.hackathon-card h3.hackathon-name {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--primary-blue);
-    margin-bottom: 0.5rem;
-}
-.hackathon-card p.hackathon-date,
-.hackathon-card p.hackathon-location {
-    font-size: 0.95rem;
-    color: var(--text-medium);
-    margin-bottom: 0.4rem;
-}
-
-.hackathon-status-badge {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fff;
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.hackathon-status-badge.status-upcoming {
-    background-color: #f59e0b; /* Amber */
-}
-.hackathon-status-badge.status-ongoing {
-    background-color: #10b981; /* Green */
-}
-.hackathon-status-badge.status-past {
-    background-color: #6b7280; /* Gray */
-}
-
-.hackathon-card button.hackathon-apply-btn {
-    margin-top: 1rem;
-    align-self: flex-end;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: var(--rounded-md);
-    box-shadow: var(--shadow-md);
-    background-color: var(--primary-blue);
-    color: #fff;
-    transition: background-color 0.3s ease;
-}
-.hackathon-card button.hackathon-apply-btn:hover {
-    background-color: var(--primary-blue-dark);
-}
-
-.no-hackathons-message {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  
+  .no-hackathons-found {
     text-align: center;
-    font-size: 1.2rem;
-    color: var(--text-medium);
-    margin-top: 2rem;
-    grid-column: 1 / -1;
-}
-
-
-/* Responsive grid for hackathon cards */
-@media (min-width: 640px) { /* sm breakpoint */
-    .hackathon-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    /* Make filter bar horizontal */
-    .hackathon-filters-bar {
-        flex-direction: row;
-        justify-content: space-between; /* Space items out */
-        align-items: center;
-    }
-    .filter-search-input {
-        flex-grow: 1; /* Take up remaining space */
-        margin-right: 1rem; /* Space between search and select */
-    }
-    .filter-type-select {
-        width: auto; /* Shrink to content */
-    }
-}
-
-@media (min-width: 1024px) { /* lg breakpoint */
-    .hackathon-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
+    padding: 4rem 1rem;
+    background-color: #f9fafb;
+    border-radius: 8px;
+  }
+  
+  .no-hackathons-found h2 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .no-hackathons-found p {
+    font-size: 1.125rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
