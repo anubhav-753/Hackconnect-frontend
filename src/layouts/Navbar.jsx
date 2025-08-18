@@ -1,161 +1,55 @@
-// src/layouts/Navbar.jsx
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useContext } from "react"; // Import useContext
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 import "./Navbar.css";
-import { useAuth } from "../contexts/AuthContext";
 
-function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // CHANGED: Renamed isLoggedIn to isAuthenticated to match AuthContext
-  const { user, isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate(); // Get navigate function
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  const handleLogout = () => {
-    logout();
-    closeMobileMenu();
-    navigate("/"); // Redirect to home after logout
-  };
+const Navbar = () => {
+  // Use the useContext hook here
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <nav className="navbar">
-      <div className="navbar-container container">
-        <Link to="/" className="navbar-brand" onClick={closeMobileMenu}>
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
           HackConnect
         </Link>
-
-        {/* Desktop Links */}
-        <div className="navbar-links-desktop">
-          <Link to="/hackathons" className="navbar-link">
-            Hackathons
-          </Link>
-          <Link to="/team-maker" className="navbar-link">
-            Team Maker
-          </Link>
-          <Link to="/about" className="navbar-link">
-            About
-          </Link>
-          <Link to="/contact" className="navbar-link">
-            Contact
-          </Link>
-          <Link to="/chat" className="navbar-link">
-            Chat
-          </Link>
-        </div>
-
-        {/* Desktop Auth */}
-        <div className="navbar-auth-buttons-desktop">
-          {/* CHANGED: Check for isAuthenticated and user object */}
-          {isAuthenticated && user ? (
+        <ul className="nav-menu">
+          <li className="nav-item">
+            <NavLink to="/hackathons" className="nav-links">
+              Hackathons
+            </NavLink>
+          </li>
+          {user ? (
             <>
-              <span className="navbar-welcome-text">
-                Hi, {user.name.split(" ")[0]}!
-              </span>
-              {/* CHANGED: Link to user._id instead of user.id */}
-              <Link
-                to={`/profile/${user._id}`}
-                className="navbar-profile-link transition-ease"
-              >
-                My Profile
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="navbar-login-btn transition-ease"
-              >
-                Logout
-              </button>
+              <li className="nav-item">
+                <NavLink to="/profile" className="nav-links">
+                  Profile
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <Link to="/" className="nav-links" onClick={logout}>
+                  Logout
+                </Link>
+              </li>
             </>
           ) : (
             <>
-              <Link to="/login" className="navbar-login-btn transition-ease">
-                Login
-              </Link>
-              <Link to="/signup" className="navbar-signup-btn transition-ease">
-                Sign Up
-              </Link>
+              <li className="nav-item">
+                <NavLink to="/login" className="nav-links">
+                  Login
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/signup" className="nav-links">
+                  Sign Up
+                </NavLink>
+              </li>
             </>
           )}
-        </div>
-
-        {/* Mobile Hamburger Button */}
-        <div className="navbar-mobile-toggle">
-          <button className="navbar-hamburger" onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? "✕" : "☰"}
-          </button>
-        </div>
+        </ul>
       </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="navbar-mobile-menu-overlay transition-ease">
-          <div className="navbar-mobile-links">
-            {/* Links for mobile */}
-            <Link
-              to="/hackathons"
-              className="navbar-mobile-link"
-              onClick={closeMobileMenu}
-            >
-              Hackathons
-            </Link>
-            <Link
-              to="/team-maker"
-              className="navbar-mobile-link"
-              onClick={closeMobileMenu}
-            >
-              Team Maker
-            </Link>
-            {/* ... other links */}
-          </div>
-          <div className="navbar-mobile-auth-buttons">
-            {isAuthenticated && user ? (
-              <>
-                <span className="navbar-mobile-welcome-text">
-                  Hi, {user.name.split(" ")[0]}!
-                </span>
-                <Link
-                  to={`/profile/${user._id}`}
-                  className="navbar-mobile-link"
-                  onClick={closeMobileMenu}
-                >
-                  My Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="navbar-mobile-login-btn transition-ease"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="navbar-mobile-login-btn transition-ease"
-                  onClick={closeMobileMenu}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="navbar-mobile-signup-btn transition-ease"
-                  onClick={closeMobileMenu}
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </nav>
   );
-}
+};
 
 export default Navbar;

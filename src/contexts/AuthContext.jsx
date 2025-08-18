@@ -1,77 +1,52 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
-// Create the context
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-// Create the provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // To check initial auth status
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // This effect runs on initial app load to check for an existing token
   useEffect(() => {
-    const loadUserFromToken = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          // The interceptor in api.js will automatically add the token to this request
-          const { data: userData } = await api.get("/users/me");
-          setUser(userData);
-        } catch (error) {
-          console.error(
-            "Session expired or token is invalid. Please log in again."
-          );
-          // If token is invalid, clear it
-          localStorage.removeItem("token");
-        }
+    const checkUser = async () => {
+      try {
+        const { data } = await api.get("/users/me");
+        setUser(data);
+      } catch (error) {
+        // No user logged in
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
-    loadUserFromToken();
+    checkUser();
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     const { data } = await api.post("/users/login", { email, password });
-    localStorage.setItem("token", data.token);
-    // After setting token, get user data
-    const { data: userData } = await api.get("/users/me");
-    setUser(userData);
+    setUser(data);
+    navigate("/hackathons");
   };
 
-  // Signup function
   const signup = async (name, email, password) => {
-    const { data } = await api.post("/users/signup", { name, email, password });
-    localStorage.setItem("token", data.token);
-    const { data: userData } = await api.get("/users/me");
-    setUser(userData);
+    const { data } = await api.post("/users/register", {
+      name,
+      email,
+      password,
+    });
+    setUser(data);
+    navigate("/hackathons");
   };
 
-  // Logout function
   const logout = () => {
-    localStorage.removeItem("token");
     setUser(null);
-  };
-
-  // The value provided to consuming components
-  const value = {
-    user,
-    isAuthenticated: !!user,
-    loading,
-    login,
-    signup,
-    logout,
+    navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+      {children}
     </AuthContext.Provider>
   );
-};
-
-// Custom hook to use the AuthContext easily in other components
-export const useAuth = () => {
-  return useContext(AuthContext);
 };
