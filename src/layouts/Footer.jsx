@@ -1,5 +1,6 @@
 import React from "react";
-import "./Footer.css"; // Import Footer's specific CSS
+import { Link } from "react-router-dom"; // Import Link
+import "./Footer.css";
 
 function Footer() {
   return (
@@ -10,13 +11,15 @@ function Footer() {
           Connecting Innovators, Building the Future.
         </p>
         <div className="footer-links">
-          <a href="#" className="footer-link transition-ease">
+          {/* FIX: Replaced <a> with <Link> and used a real path */}
+          <Link to="/privacy-policy" className="footer-link transition-ease">
             Privacy Policy
-          </a>
+          </Link>
           <span className="footer-link-separator">|</span>
-          <a href="#" className="footer-link transition-ease">
+          {/* FIX: Replaced <a> with <Link> and used a real path */}
+          <Link to="/terms-of-service" className="footer-link transition-ease">
             Terms of Service
-          </a>
+          </Link>
         </div>
         <p className="footer-copyright">
           &copy; {new Date().getFullYear()} HackConnect. All rights reserved.

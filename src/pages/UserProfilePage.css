@@ -1,0 +1,259 @@
+/* Main page container */
+.user-profile-page {
+    padding: 2rem 1rem; /* Responsive padding */
+    background-color: var(--bg-light);
+    min-height: calc(100vh - 80px - 200px); /* Adjust based on your nav/footer height */
+  }
+  
+  /* Main grid layout */
+  .profile-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Switch to two columns on larger screens */
+  @media (min-width: 992px) {
+    .profile-container {
+      grid-template-columns: 320px 1fr;
+    }
+  }
+  
+  /* Shared card styles */
+  .profile-sidebar,
+  .profile-main {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* --- Sidebar Styling --- */
+  .profile-sidebar {
+    padding: 2rem;
+    text-align: center;
+    align-self: start; /* Prevents sidebar from stretching */
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e9ecef;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+  }
+  
+  .profile-status {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .social-links a {
+    font-size: 1.5rem;
+    color: var(--text-medium);
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .social-links a:hover {
+    color: var(--primary-blue);
+  }
+  
+  /* --- Main Content Styling --- */
+  .profile-main {
+    padding: 2rem;
+  }
+  
+  .profile-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+  }
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 0.75rem 0;
+    margin: 0 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: color 0.2s, border-bottom-color 0.2s;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .tab-button:first-child {
+    margin-left: 0;
+  }
+  
+  .tab-button.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+  }
+  
+  .tab-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f3f5;
+  }
+  
+  .about-section p {
+    line-height: 1.7;
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+  }
+  
+  /* --- Skills & Projects Styling --- */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .skill-tag {
+    background-color: #e7f5ff;
+    color: #1c7ed6;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .project-card {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+  
+  .project-card h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-technologies {
+    margin-top: 1rem;
+  }
+  
+  .tech-tag {
+    background-color: #e9ecef;
+    color: var(--text-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* --- Edit Mode Styles --- */
+  
+  .profile-name-input,
+  .profile-status-input,
+  .bio-textarea,
+  .achievements-input,
+  .skills-input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .profile-name-input:focus,
+  .profile-status-input:focus,
+  .bio-textarea:focus,
+  .achievements-input:focus,
+  .skills-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  }
+  
+  .profile-name-input {
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .profile-status-input {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+  
+  .bio-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  .edit-buttons {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+  }
+  
+  /* Shared Button Styles */
+  .edit-profile-button,
+  .save-button,
+  .cancel-button {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    flex: 1;
+  }
+  
+  .edit-profile-button {
+    background-color: var(--primary-blue);
+    color: white;
+  }
+  
+  .edit-profile-button:hover {
+    background-color: var(--primary-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  }
+  
+  .save-button {
+    background-color: #28a745;
+    color: white;
+  }
+  .save-button:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-button {
+    background-color: #f1f3f5;
+    color: var(--text-dark);
+  }
+  .cancel-button:hover {
+    background-color: #e9ecef;
+  }
