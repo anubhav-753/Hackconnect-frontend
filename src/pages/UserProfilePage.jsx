@@ -1,549 +1,378 @@
-// src/pages/UserProfilePage.jsx
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import "./UserProfilePage.css";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { useAuth } from "../contexts/AuthContext";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
-// Re-using the mock student data from TeamMakerPage.jsx for now
-// NOTE: Ensure mockStudents has ALL fields including socialLinks, bio, etc.
-const mockStudents = [
-  {
-    id: 1,
-    name: "Aarav Sharma",
-    profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-    college: "IIT Bombay",
-    state: "Maharashtra",
-    branch: "CSE",
-    skills: [
-      "Frontend",
-      "React",
-      "Node.js",
-      "UI/UX",
-      "Mobile Dev",
-      "Cloud Development",
-    ],
-    achievements:
-      "Winner of CodeFest 2024; Contributed to open-source project; Published article on Web Performance",
-    bio: "Passionate full-stack developer with a keen interest in building scalable and user-friendly web applications. Love hackathons for the intense learning and collaborative environment.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/aaravsharma",
-      github: "https://github.com/aaravdev",
-    },
-  },
-  {
-    id: 2,
-    name: "Priya Singh",
-    profilePicture: "https://randomuser.me/api/portraits/women/2.jpg",
-    college: "NIT Rourkela",
-    state: "Odisha",
-    branch: "ECE",
-    skills: [
-      "AI/ML",
-      "Python",
-      "Data Science",
-      "Computer Vision",
-      "Deep Learning",
-    ],
-    achievements:
-      "Published research paper on NLP; Top 10 in Kaggle competition; Developed a smart city prototype",
-    bio: "AI enthusiast exploring the frontiers of machine learning. Specializing in computer vision and natural language processing. Eager to apply AI solutions to real-world problems.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/priyasingh",
-      github: "https://github.com/priyaai",
-    },
-  },
-  {
-    id: 3,
-    name: "Rahul Kumar",
-    profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
-    college: "BITS Pilani",
-    state: "Rajasthan",
-    branch: "IT",
-    skills: [
-      "Backend",
-      "Java",
-      "Spring Boot",
-      "Database Management",
-      "Cloud Architecture",
-    ],
-    achievements:
-      "Developed an e-commerce platform; Certified Oracle DBA; Lead developer in university project",
-    bio: "Experienced backend developer focused on robust and scalable systems. Proficient in Java and Spring Boot, with a strong understanding of database design and cloud services.",
-    status: "in a team",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/rahulkumar",
-      github: "https://github.com/rahuldev",
-    },
-  },
-  {
-    id: 4,
-    name: "Disha Patel",
-    profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-    college: "VIT Vellore",
-    state: "Tamil Nadu",
-    branch: "CSE",
-    skills: [
-      "Design",
-      "Figma",
-      "Photoshop",
-      "UI/UX",
-      "Graphic Design",
-      "Web Design",
-    ],
-    achievements:
-      "Designed 5+ mobile apps; Winner of Designathon 2023; Created design systems for startups",
-    bio: "Creative UI/UX designer passionate about crafting intuitive and visually stunning digital experiences. Loves translating complex ideas into elegant designs.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/dishapatel",
-      github: "https://github.com/dishadesigns",
-    },
-  },
-  {
-    id: 5,
-    name: "Vikram Reddy",
-    profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
-    college: "IIT Madras",
-    state: "Tamil Nadu",
-    branch: "CSE",
-    skills: [
-      "AI/ML",
-      "Deep Learning",
-      "TensorFlow",
-      "NLP",
-      "Cloud Computing",
-      "Research",
-    ],
-    achievements:
-      "Built autonomous drone prototype; Google AI Residency alumnus; Published several research papers",
-    bio: "Dedicated AI researcher and developer with a focus on cutting-edge deep learning models. Always looking for challenging projects to push the boundaries of AI.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/vikramreddy",
-      github: "https://github.com/vikramai",
-    },
-  },
-  {
-    id: 6,
-    name: "Sneha Sharma",
-    profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
-    college: "Delhi Technological University",
-    state: "Delhi",
-    branch: "IT",
-    skills: ["Frontend", "Vue.js", "UX Research", "Accessibility"],
-    achievements:
-      "Lead UI/UX at startup hackathon; Created accessible web components",
-    bio: "Frontend specialist passionate about creating highly performant and accessible web applications. Believes in inclusive design and continuous learning.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/snehasharma",
-      github: "https://github.com/snehafrontend",
-    },
-  },
-  {
-    id: 7,
-    name: "Arjun Gupta",
-    profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
-    college: "IIT Delhi",
-    state: "Delhi",
-    branch: "ECE",
-    skills: ["Embedded Systems", "IoT", "C++", "Hardware Design"],
-    achievements: "Built smart home automation system; Published IEEE paper",
-    bio: "Innovator in embedded systems and IoT. Enthusiastic about bringing physical devices to life with code and hardware. Always keen on interdisciplinary projects.",
-    status: "available",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/arjuncs",
-      github: "https://github.com/arjuniot",
-    },
-  },
-  {
-    id: 8,
-    name: "Sonia Kapoor",
-    profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
-    college: "SRM Institute of Science and Technology",
-    state: "Tamil Nadu",
-    branch: "IT",
-    skills: ["Backend", "Python", "Django", "APIs", "Cybersecurity"],
-    achievements: "Developed secure authentication system; Bug bounty hunter",
-    status: "in a team",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/soniak",
-      github: "https://github.com/soniabackend",
-    },
-  },
-];
+// --- SVG Icons for Social Links (Integrated for a cleaner look) ---
+const LinkedInIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="w-5 h-5 fill-current"
+  >
+    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+  </svg>
+);
+const GitHubIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="w-5 h-5 fill-current"
+  >
+    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
+const PortfolioIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="w-5 h-5 fill-current"
+  >
+    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1 15.5v-7l6 3.5-6 3.5z" />
+  </svg>
+);
+const defaultUserIcon =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYTVhZSI+PHBhdGggZD0iTTEyIDJDNi44MiAyIDIgNi44MiAyIDEyczQuODIgMTAgMTAgMTAgMTAtNC44MiAxMC0xMFMxNy4xOCAyIDEyIDJ6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTRjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+";
 
-function UserProfilePage() {
-  const { id } = useParams();
-  const { user: currentUser, isLoggedIn, updateUser } = useAuth(); // Get currentUser and updateUser function
+// Main App Component
+const App = () => {
+  const fileInputRef = useRef(null);
 
+  // --- State Management ---
   const [displayedUser, setDisplayedUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const isMyProfile =
-    isLoggedIn && currentUser && parseInt(id) === currentUser.id;
-
+  // --- Initial Data Loading ---
   useEffect(() => {
     setLoading(true);
     setError(null);
+    setTimeout(() => {
+      const mockUser = {
+        name: "Alex Doe",
+        profilePicture: defaultUserIcon,
+        status: "available",
+        bio: "A passionate developer ready to build amazing things. I specialize in creating modern, responsive web applications with a focus on user experience.",
+        skills: ["React", "JavaScript", "Node.js", "Tailwind CSS", "Next.js"],
+        achievements:
+          "Winner of the 'Most Innovative Idea' award at a recent hackathon.",
+        socialLinks: {
+          linkedin: "https://linkedin.com/in/alexdoe",
+          github: "https://github.com/alexdoe",
+          portfolio: "https://alexdoe.com",
+        },
+      };
+      setDisplayedUser(mockUser);
+      setLoading(false);
+    }, 800);
+  }, []);
 
-    const timer = setTimeout(() => {
-      let userToLoad = null;
-      // Always try to find the user from mockStudents first by ID
-      const foundUserInMocks = mockStudents.find((s) => s.id === parseInt(id));
-
-      if (foundUserInMocks) {
-        // Create a mutable copy and ensure socialLinks is an object
-        const userCopy = { ...foundUserInMocks };
-        if (!userCopy.socialLinks) userCopy.socialLinks = {};
-        if (!userCopy.skills) userCopy.skills = []; // Ensure skills is an array
-        if (!userCopy.achievements) userCopy.achievements = ""; // Ensure achievements is string
-
-        setDisplayedUser(userCopy);
-        setFormData(userCopy); // Initialize form data for editing
-
-        // If this is the logged-in user's profile, update AuthContext with full mock data details
-        // This ensures currentUser in context has all detailed properties like status, bio etc.
-        if (
-          isMyProfile &&
-          currentUser.id === foundUserInMocks.id &&
-          updateUser
-        ) {
-          updateUser(userCopy); // Update context user with full details from mock
-        }
-        setLoading(false);
-      } else {
-        setError("User not found.");
-        setLoading(false);
-      }
-    }, 500); // Simulate 500ms loading time
-    return () => clearTimeout(timer);
-  }, [id, isMyProfile, currentUser, updateUser]); // Rerun if ID, isMyProfile, currentUser, or updateUser function changes
-
+  // --- Event Handlers ---
   const handleEdit = () => {
-    setIsEditing(true);
-    // Create a deep copy of current displayed user's data for form, especially for socialLinks
     setFormData({
       ...displayedUser,
-      socialLinks: { ...(displayedUser.socialLinks || {}) },
-      skills: [...(displayedUser.skills || [])],
+      skills: displayedUser.skills.join(", "), // Convert array to string for editing
     });
+    setImagePreview(displayedUser.profilePicture);
+    setIsEditing(true);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Revert form data to original displayed user data (deep copy for socialLinks)
-    setFormData({
-      ...displayedUser,
-      socialLinks: { ...(displayedUser.socialLinks || {}) },
-      skills: [...(displayedUser.skills || [])],
-    });
+    setImagePreview(null);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, newProfilePicture: file }));
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSave = () => {
+    const skillsArray =
+      typeof formData.skills === "string"
+        ? formData.skills
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter(Boolean)
+        : displayedUser.skills;
+
+    const finalData = {
+      ...formData,
+      skills: skillsArray,
+      profilePicture: imagePreview || displayedUser.profilePicture,
+    };
+    delete finalData.newProfilePicture;
+
+    setDisplayedUser(finalData);
+    setIsEditing(false);
+    setImagePreview(null);
   };
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    // Handle nested socialLinks specifically
-    if (name.startsWith("socialLinks.")) {
-      const socialPlatform = name.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        socialLinks: {
-          ...prev.socialLinks,
-          [socialPlatform]: value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = async () => {
-    setLoading(true);
-    console.log("Saving user data (frontend simulation):", formData);
-
-    // Simulate API call success
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Update the displayed user data on frontend
-    setDisplayedUser({ ...formData });
-    setIsEditing(false); // Exit editing mode
-    setLoading(false);
-
-    // Update user in AuthContext if it's "My Profile"
-    if (isMyProfile && updateUser) {
-      updateUser({ ...formData }); // Pass the updated formData to context
+  // --- Gemini API Bio Generation ---
+  const generateBio = useCallback(async () => {
+    const keywords = formData.skills || "";
+    if (!keywords) {
+      alert("Please add some skills first to generate a bio.");
+      return;
     }
-    alert("Profile updated successfully (frontend simulation)!"); // Simple feedback
-  };
+    setIsGenerating(true);
 
-  // Ensure displayedUser is not null before proceeding to render
-  if (loading) {
+    const prompt = `Write a professional and engaging bio for a software engineer's profile page, in the first person. The bio should be around 50-70 words. Use the following keywords as inspiration: "${keywords}".`;
+
+    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+    const apiKey = ""; // API key is handled by the environment
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+      const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) {
+        setFormData((prev) => ({ ...prev, bio: text.trim() }));
+      } else {
+        throw new Error("Unexpected response structure from Gemini API.");
+      }
+    } catch (err) {
+      console.error("API call failed:", err);
+      alert("Failed to generate bio. Please try again later.");
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [formData.skills]);
+
+  // --- Render Logic ---
+  if (loading)
     return (
-      <div className="page-section user-profile-page flex-center">
-        <LoadingSpinner />
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <p>Loading Profile...</p>
       </div>
     );
-  }
-
-  if (error) {
+  if (error)
     return (
-      <div className="page-section user-profile-page flex-center">
-        <p className="error-message">{error}</p>
-        <Link to="/team-maker" className="back-link">
-          Back to Team Maker
-        </Link>
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <p className="text-red-500">{error}</p>
       </div>
     );
-  }
+  if (!displayedUser) return null;
 
-  // If user is null AFTER loading and no error, means profile data is unavailable
-  if (!displayedUser) {
-    return (
-      <div className="page-section user-profile-page flex-center">
-        <p className="error-message">
-          Profile data unavailable or user not found.
-        </p>
-        <Link to="/team-maker" className="back-link">
-          Back to Team Maker
-        </Link>
-      </div>
-    );
-  }
-
-  // Use userToDisplay for rendering, which will be either original displayedUser or formData
-  const userToDisplay = isEditing ? formData : displayedUser;
-  const isAvailable = userToDisplay.status === "available";
-  const statusClass = isAvailable ? "status-available" : "status-in-team";
+  const userToDisplay = isEditing
+    ? { ...formData, profilePicture: imagePreview }
+    : displayedUser;
+  const statusClass =
+    userToDisplay.status === "available" ? "bg-green-500" : "bg-red-500";
 
   return (
-    <div className="page-section user-profile-page">
-      <div className="container user-profile-container">
-        <div className="profile-header shadow-md rounded-md">
-          <img
-            src={
-              userToDisplay.profilePicture || "https://via.placeholder.com/200"
-            }
-            alt={userToDisplay.name}
-            className="profile-picture"
-          />
-          <div className="profile-header-info">
-            {isEditing ? ( // Show input for name in editing mode
+    <div className="bg-gray-100 min-h-screen p-4 sm:p-6 lg:p-8 font-sans">
+      <div className="container mx-auto max-w-6xl">
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* --- Left Column: Profile Card --- */}
+            <div className="lg:col-span-1 flex flex-col items-center text-center p-6 bg-gray-50 rounded-xl border">
+              <div className="relative">
+                <img
+                  src={userToDisplay.profilePicture}
+                  alt={userToDisplay.name}
+                  className="w-36 h-36 rounded-full border-4 border-blue-400 object-cover shadow-lg"
+                />
+                {isEditing && (
+                  <button
+                    className="absolute bottom-1 right-1 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition"
+                    onClick={() => fileInputRef.current.click()}
+                    aria-label="Change profile picture"
+                  >
+                    <svg
+                      className="w-4 h-4 text-gray-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                      <path
+                        fillRule="evenodd"
+                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                )}
+              </div>
               <input
-                type="text"
-                name="name"
-                value={userToDisplay.name || ""}
-                onChange={handleFormChange}
-                className="form-input profile-name-input"
-                placeholder="Full Name"
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+                accept="image/*"
               />
-            ) : (
-              <h1 className="profile-name">{userToDisplay.name}</h1>
-            )}
 
-            <p className="profile-info">
-              {isEditing ? ( // Show inputs for college, state, branch
-                <>
-                  <input
-                    type="text"
-                    name="branch"
-                    value={userToDisplay.branch || ""}
-                    onChange={handleFormChange}
-                    className="form-input profile-inline-input"
-                    placeholder="Branch"
-                  />
-                  <span> | </span>
-                  <input
-                    type="text"
-                    name="college"
-                    value={userToDisplay.college || ""}
-                    onChange={handleFormChange}
-                    className="form-input profile-inline-input"
-                    placeholder="College"
-                  />
-                  <span>, </span>
-                  <input
-                    type="text"
-                    name="state"
-                    value={userToDisplay.state || ""}
-                    onChange={handleFormChange}
-                    className="form-input profile-inline-input"
-                    placeholder="State"
-                  />
-                </>
-              ) : (
-                `${userToDisplay.branch || ""} | ${
-                  userToDisplay.college || ""
-                }, ${userToDisplay.state || ""}`
-              )}
-            </p>
-
-            {/* Status is not editable in this simple demo, always displayed */}
-            <p className={`profile-status-badge ${statusClass}`}>
-              Status: {userToDisplay.status || "N/A"}
-            </p>
-
-            <div className="profile-social-links">
               {isEditing ? (
-                <>
-                  <input
-                    type="text"
-                    name="socialLinks.linkedin"
-                    value={userToDisplay.socialLinks.linkedin || ""}
-                    onChange={handleFormChange}
-                    className="form-input profile-inline-input"
-                    placeholder="LinkedIn URL"
-                  />
-                  <input
-                    type="text"
-                    name="socialLinks.github"
-                    value={userToDisplay.socialLinks.github || ""}
-                    onChange={handleFormChange}
-                    className="form-input profile-inline-input"
-                    placeholder="GitHub URL"
-                  />
-                </>
+                <input
+                  name="name"
+                  value={userToDisplay.name}
+                  onChange={handleFormChange}
+                  className="text-3xl font-bold mt-4 bg-gray-200 rounded-md p-2 text-center w-full"
+                />
               ) : (
-                <>
-                  {userToDisplay.socialLinks.linkedin && (
-                    <a
-                      href={userToDisplay.socialLinks.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="social-link"
-                    >
-                      LinkedIn
-                    </a>
-                  )}
-                  {userToDisplay.socialLinks.github && (
-                    <a
-                      href={userToDisplay.socialLinks.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="social-link"
-                    >
-                      GitHub
-                    </a>
-                  )}
-                </>
+                <h1 className="text-3xl font-bold mt-4">
+                  {userToDisplay.name}
+                </h1>
               )}
-            </div>
-            {/* Edit/Save/Cancel Buttons for My Profile */}
-            {isMyProfile && (
-              <div className="profile-edit-actions">
+
+              <div
+                className={`mt-2 text-xs font-semibold px-3 py-1 rounded-full text-white ${statusClass}`}
+              >
+                Status: {userToDisplay.status}
+              </div>
+
+              <div className="flex justify-center space-x-4 mt-6">
+                <a
+                  href={userToDisplay.socialLinks.linkedin}
+                  className="text-gray-500 hover:text-blue-600"
+                >
+                  <LinkedInIcon />
+                </a>
+                <a
+                  href={userToDisplay.socialLinks.github}
+                  className="text-gray-500 hover:text-gray-800"
+                >
+                  <GitHubIcon />
+                </a>
+                <a
+                  href={userToDisplay.socialLinks.portfolio}
+                  className="text-gray-500 hover:text-blue-500"
+                >
+                  <PortfolioIcon />
+                </a>
+              </div>
+
+              <div className="mt-8 w-full">
                 {isEditing ? (
-                  <>
+                  <div className="flex space-x-2">
                     <button
                       onClick={handleSave}
-                      className="primary-btn transition-ease"
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition"
                     >
-                      Save Profile
+                      Save
                     </button>
                     <button
                       onClick={handleCancel}
-                      className="secondary-btn transition-ease"
+                      className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
                     >
                       Cancel
                     </button>
-                  </>
+                  </div>
                 ) : (
                   <button
                     onClick={handleEdit}
-                    className="secondary-btn transition-ease"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition"
                   >
                     Edit Profile
                   </button>
                 )}
               </div>
-            )}
+            </div>
+
+            {/* --- Right Column: Detailed Information --- */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Bio Section */}
+              <div>
+                <h2 className="text-2xl font-semibold border-b-2 border-blue-400 pb-2 mb-4">
+                  Bio
+                </h2>
+                {isEditing ? (
+                  <div className="space-y-3">
+                    <textarea
+                      name="bio"
+                      value={userToDisplay.bio}
+                      onChange={handleFormChange}
+                      rows="4"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                    ></textarea>
+                    <button
+                      onClick={generateBio}
+                      disabled={isGenerating}
+                      className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-300 text-white font-semibold py-2 px-5 rounded-lg flex items-center justify-center"
+                    >
+                      {isGenerating ? "Generating..." : "✨ Generate with AI"}
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-gray-600 leading-relaxed">
+                    {userToDisplay.bio}
+                  </p>
+                )}
+              </div>
+
+              {/* Skills Section */}
+              <div>
+                <h2 className="text-2xl font-semibold border-b-2 border-blue-400 pb-2 mb-4">
+                  Skills
+                </h2>
+                {isEditing ? (
+                  <input
+                    name="skills"
+                    value={userToDisplay.skills}
+                    onChange={handleFormChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                    placeholder="Comma-separated skills"
+                  />
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {userToDisplay.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1.5 rounded-full"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Achievements Section */}
+              <div>
+                <h2 className="text-2xl font-semibold border-b-2 border-blue-400 pb-2 mb-4">
+                  Achievements
+                </h2>
+                {isEditing ? (
+                  <textarea
+                    name="achievements"
+                    value={userToDisplay.achievements}
+                    onChange={handleFormChange}
+                    rows="3"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                  ></textarea>
+                ) : (
+                  <div className="flex items-start">
+                    <span className="text-yellow-500 mt-1 mr-3 text-xl">
+                      🏆
+                    </span>
+                    <p className="text-gray-600">
+                      {userToDisplay.achievements}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="profile-details-card shadow-md rounded-md">
-          <h2 className="section-heading">Bio</h2>
-          {isEditing ? (
-            <textarea
-              name="bio"
-              value={userToDisplay.bio || ""}
-              onChange={handleFormChange}
-              className="form-input profile-textarea-input"
-              rows="5"
-              placeholder="Tell us about yourself..."
-            ></textarea>
-          ) : (
-            <p className="profile-bio">
-              {userToDisplay.bio || "No bio provided."}
-            </p>
-          )}
-
-          <h2 className="section-heading">Skills</h2>
-          {isEditing ? (
-            <textarea
-              name="skills"
-              value={
-                userToDisplay.skills ? userToDisplay.skills.join(", ") : ""
-              }
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  skills: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter((s) => s),
-                }))
-              }
-              className="form-input profile-textarea-input"
-              rows="3"
-              placeholder="Comma-separated skills (e.g., React, Node.js)"
-            ></textarea>
-          ) : (
-            <div className="profile-skills-list">
-              {userToDisplay.skills && userToDisplay.skills.length > 0 ? (
-                userToDisplay.skills.map((skill, index) => (
-                  <span key={index} className="skill-tag">
-                    {skill}
-                  </span>
-                ))
-              ) : (
-                <p className="no-info-message">No skills listed.</p>
-              )}
-            </div>
-          )}
-
-          <h2 className="section-heading">Achievements</h2>
-          {isEditing ? (
-            <textarea
-              name="achievements"
-              value={userToDisplay.achievements || ""}
-              onChange={handleFormChange}
-              className="form-input profile-textarea-input"
-              rows="5"
-              placeholder="List your achievements (e.g., 'Won X Hackathon; Published Y Paper')"
-            ></textarea>
-          ) : (
-            <p className="profile-achievements">
-              {userToDisplay.achievements || "No achievements listed."}
-            </p>
-          )}
-        </div>
-
-        {/* Back to Team Maker button (hide if editing own profile) */}
-        {!isMyProfile && (
-          <Link
-            to="/team-maker"
-            className="back-to-team-maker-btn primary-btn transition-ease"
-          >
-            ← Back to Team Maker
-          </Link>
-        )}
       </div>
     </div>
   );
-}
+};
 
-export default UserProfilePage;
+export default App;

@@ -81,23 +81,6 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.primary-btn {
-  background-color: var(--primary-blue);
-  color: #fff;
-}
-.primary-btn:hover {
-  background-color: var(--primary-blue-dark);
-}
-
-.secondary-btn {
-  background-color: #fff;
-  color: var(--primary-blue);
-  border: 2px solid var(--primary-blue);
-}
-.secondary-btn:hover {
-  background-color: var(--primary-blue);
-  color: #fff;
-}
 
 /* Right side: Placeholder for 3D Visual Object */
 .homepage-visuals {

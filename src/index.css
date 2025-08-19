@@ -94,3 +94,21 @@ button {
     min-height: calc(100vh - 72px - 200px);
     background-color: var(--text-dark); /* Dark background for the main content area */
 }
+.primary-btn {
+    background-color: var(--primary-blue);
+    color: #fff;
+  }
+  .primary-btn:hover {
+    background-color: var(--primary-blue-dark);
+  }
+  
+  .secondary-btn {
+    background-color: #fff;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+  }
+  .secondary-btn:hover {
+    background-color: var(--primary-blue);
+    color: #fff;
+  }
+  

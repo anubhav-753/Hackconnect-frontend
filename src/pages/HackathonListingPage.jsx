@@ -11,7 +11,7 @@ function HackathonListingPage() {
   const [upcomingHackathons, setUpcomingHackathons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchAndCategorizeHackathons = async () => {
@@ -45,7 +45,7 @@ function HackathonListingPage() {
       <div className="container">
         <div className="page-header">
           <h1 className="page-title">Discover Hackathons</h1>
-          {isAuthenticated && (
+          {user && (
             <Link to="/create-hackathon" className="primary-btn">
               + Create Hackathon
             </Link>
