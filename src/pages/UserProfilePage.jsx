@@ -1,50 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./UserProfilePage.css";
-import { FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaGlobe, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const UserProfilePage = () => {
-  const { user, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState("about");
+  const { user, loading, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [message, setMessage] = useState("");
 
-  const handleEdit = () => {
+  // This is a safe function to set up the form state from the user object
+  const setupForm = () => {
     setFormData({
       name: user.name || "",
       profilePicture:
-        user.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg", // This line fixes the bug
-      status: user.status || "",
+        user.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
+      status: user.status || "available",
       bio: user.bio || "",
       achievements: user.achievements || "",
       skills: (user.skills || []).join(", "),
-      socialLinks: user.socialLinks || {
-        linkedin: "",
-        github: "",
-        portfolio: "",
+      socialLinks: {
+        linkedin: user.socialLinks?.linkedin || "",
+        github: user.socialLinks?.github || "",
+        portfolio: user.socialLinks?.portfolio || "",
       },
-      projects: user.projects || [],
     });
+  };
+
+  // This `useEffect` hook runs when the 'user' object from context changes.
+  // It ensures that your form data is always based on the latest user info.
+  useEffect(() => {
+    if (user) {
+      setupForm();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const handleEdit = () => {
+    setMessage("");
+    setupForm(); // Use the safe setup function
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    const updatedUser = {
-      ...user,
-      ...formData,
-      skills: formData.skills
+  const handleSave = async () => {
+    try {
+      // This safely handles the case where skills might be an empty string
+      const skillsArray = (formData.skills || "")
         .split(",")
         .map((s) => s.trim())
-        .filter(Boolean),
-    };
-    console.log("Saving user data:", updatedUser);
-    setIsEditing(false);
+        .filter(Boolean);
+
+      const updatedData = { ...formData, skills: skillsArray };
+
+      await updateUser(updatedData);
+      setIsEditing(false);
+      setMessage("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update failed:", error);
+      setMessage("Failed to update profile. Please try again.");
+    }
   };
 
   const handleCancel = () => {
     setIsEditing(false);
+    setMessage("");
   };
 
   const handleFormChange = (e) => {
@@ -60,201 +81,212 @@ const UserProfilePage = () => {
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-
-  const displayUser = isEditing
-    ? formData
-    : {
-        name: user.name || "User Name",
-        profilePicture:
-          user.profilePicture ||
-          "https://randomuser.me/api/portraits/lego/1.jpg",
-        status: user.status || "Ready to connect!",
-        bio:
-          user.bio ||
-          "This is your bio. Click 'Edit Profile' to tell everyone about yourself!",
-        skills: user.skills || ["Add your skills"],
-        achievements: user.achievements || "No achievements listed yet.",
-        socialLinks: user.socialLinks || {
-          linkedin: "#",
-          github: "#",
-          portfolio: "#",
-        },
-        projects: user.projects || [],
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, profilePicture: reader.result }));
       };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  if (loading) return <LoadingSpinner />;
+  if (!user) return <Navigate to="/login" />;
 
   return (
     <div className="user-profile-page">
+      {message && (
+        <p
+          className={`profile-message ${
+            message.includes("successfully") ? "success" : "error"
+          }`}
+        >
+          {message}
+        </p>
+      )}
       <div className="profile-container">
         <aside className="profile-sidebar">
-          <div className="profile-card">
+          <div className="profile-picture-container">
             <img
-              src={displayUser.profilePicture}
-              alt={displayUser.name}
+              src={isEditing ? formData.profilePicture : user.profilePicture}
+              alt={user.name}
               className="profile-picture"
             />
-            {isEditing ? (
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleFormChange}
-                className="profile-name-input"
-              />
-            ) : (
-              <h1 className="profile-name">{displayUser.name}</h1>
+            {isEditing && (
+              <label
+                htmlFor="profile-picture-upload"
+                className="profile-picture-upload"
+              >
+                <FaCamera />
+                <input
+                  id="profile-picture-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePictureChange}
+                  style={{ display: "none" }}
+                />
+              </label>
             )}
-            {isEditing ? (
-              <input
-                type="text"
-                name="status"
-                value={formData.status}
-                onChange={handleFormChange}
-                className="profile-status-input"
-              />
-            ) : (
-              <p className="profile-status">{displayUser.status}</p>
-            )}
+          </div>
+
+          {isEditing ? (
+            <input
+              type="text"
+              name="name"
+              value={formData.name || ""}
+              onChange={handleFormChange}
+              className="profile-name-input"
+            />
+          ) : (
+            <h1 className="profile-name">{user.name}</h1>
+          )}
+
+          {/* This part now correctly shows input fields when editing */}
+          {isEditing ? (
+            <div className="social-links-edit">
+              <div className="social-input-group">
+                <FaLinkedin />
+                <input
+                  type="text"
+                  name="socialLinks.linkedin"
+                  placeholder="LinkedIn URL"
+                  value={formData.socialLinks?.linkedin || ""}
+                  onChange={handleFormChange}
+                />
+              </div>
+              <div className="social-input-group">
+                <FaGithub />
+                <input
+                  type="text"
+                  name="socialLinks.github"
+                  placeholder="GitHub URL"
+                  value={formData.socialLinks?.github || ""}
+                  onChange={handleFormChange}
+                />
+              </div>
+              <div className="social-input-group">
+                <FaGlobe />
+                <input
+                  type="text"
+                  name="socialLinks.portfolio"
+                  placeholder="Portfolio URL"
+                  value={formData.socialLinks?.portfolio || ""}
+                  onChange={handleFormChange}
+                />
+              </div>
+            </div>
+          ) : (
             <div className="social-links">
               <a
-                href={displayUser.socialLinks.linkedin}
+                href={user.socialLinks?.linkedin || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaLinkedin />
               </a>
               <a
-                href={displayUser.socialLinks.github}
+                href={user.socialLinks?.github || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaGithub />
               </a>
               <a
-                href={displayUser.socialLinks.portfolio}
+                href={user.socialLinks?.portfolio || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaGlobe />
               </a>
             </div>
-            {isEditing ? (
-              <div className="edit-buttons">
-                <button onClick={handleSave} className="save-button">
-                  Save
-                </button>
-                <button onClick={handleCancel} className="cancel-button">
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <button onClick={handleEdit} className="edit-profile-button">
-                Edit Profile
+          )}
+
+          {isEditing ? (
+            <div className="edit-buttons">
+              <button onClick={handleSave} className="save-button">
+                Save
               </button>
-            )}
-          </div>
+              <button onClick={handleCancel} className="cancel-button">
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button onClick={handleEdit} className="edit-profile-button">
+              Edit Profile
+            </button>
+          )}
         </aside>
+
         <main className="profile-main">
-          <div className="profile-tabs">
-            <button
-              className={`tab-button ${activeTab === "about" ? "active" : ""}`}
-              onClick={() => setActiveTab("about")}
-            >
-              About
-            </button>
-            <button
-              className={`tab-button ${activeTab === "skills" ? "active" : ""}`}
-              onClick={() => setActiveTab("skills")}
-            >
-              Skills
-            </button>
-            <button
-              className={`tab-button ${
-                activeTab === "projects" ? "active" : ""
-              }`}
-              onClick={() => setActiveTab("projects")}
-            >
-              Projects
-            </button>
+          <div className="status-section">
+            <h2>Status</h2>
+            {isEditing ? (
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleFormChange}
+                className="status-select"
+              >
+                <option value="available">Available for Hackathons</option>
+                <option value="not-available">Not Available</option>
+              </select>
+            ) : (
+              <p className={`status-display status-${user.status}`}>
+                {user.status === "available"
+                  ? "Available for Hackathons"
+                  : "Not Available"}
+              </p>
+            )}
           </div>
-          <div className="tab-content">
-            {activeTab === "about" && (
-              <div className="about-section">
-                <h2>Bio</h2>
-                {isEditing ? (
-                  <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleFormChange}
-                    className="bio-textarea"
-                    rows="5"
-                  ></textarea>
-                ) : (
-                  <p>{displayUser.bio}</p>
-                )}
-                <h2>Achievements</h2>
-                {isEditing ? (
-                  <input
-                    name="achievements"
-                    value={formData.achievements}
-                    onChange={handleFormChange}
-                    className="achievements-input"
-                  />
-                ) : (
-                  <p>{displayUser.achievements}</p>
-                )}
-              </div>
+          <div className="about-section">
+            <h2>Bio</h2>
+            {isEditing ? (
+              <textarea
+                name="bio"
+                value={formData.bio || ""}
+                onChange={handleFormChange}
+                className="bio-textarea"
+                rows="5"
+              ></textarea>
+            ) : (
+              <p>{user.bio || "No bio yet."}</p>
             )}
-            {activeTab === "skills" && (
-              <div className="skills-section">
-                <h2>Skills</h2>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="skills"
-                    value={formData.skills}
-                    onChange={handleFormChange}
-                    className="skills-input"
-                    placeholder="Comma, separated, skills"
-                  />
-                ) : (
-                  <div className="skills-grid">
-                    {displayUser.skills.map((skill, index) => (
-                      <span key={index} className="skill-tag">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <h2>Achievements</h2>
+            {isEditing ? (
+              <textarea
+                name="achievements"
+                value={formData.achievements || ""}
+                onChange={handleFormChange}
+                className="achievements-textarea"
+                rows="3"
+              ></textarea>
+            ) : (
+              <p>{user.achievements || "No achievements listed yet."}</p>
             )}
-            {activeTab === "projects" && (
-              <div className="projects-section">
-                <h2>Projects</h2>
-                {displayUser.projects.length > 0 ? (
-                  <div className="projects-grid">
-                    {displayUser.projects.map((project, index) => (
-                      <div key={index} className="project-card">
-                        <h3>{project.title}</h3>
-                        <p>{project.description}</p>
-                        <div className="project-technologies">
-                          {project.technologies.map((tech, i) => (
-                            <span key={i} className="tech-tag">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+          </div>
+          <div className="skills-section">
+            <h2>Skills</h2>
+            {isEditing ? (
+              <input
+                type="text"
+                name="skills"
+                value={formData.skills || ""}
+                onChange={handleFormChange}
+                className="skills-input"
+                placeholder="Comma, separated, skills"
+              />
+            ) : (
+              <div className="skills-grid">
+                {user.skills && user.skills.length > 0 ? (
+                  user.skills.map((skill, index) => (
+                    <span key={index} className="skill-tag">
+                      {skill}
+                    </span>
+                  ))
                 ) : (
-                  <p>No projects added yet. Edit your profile to add them!</p>
+                  <span>No skills listed yet.</span>
                 )}
               </div>
             )}
