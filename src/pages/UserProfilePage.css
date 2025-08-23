@@ -96,6 +96,47 @@
 .social-links a:hover {
   color: var(--primary-blue);
 }
+/* --- Social Links Edit Section --- */
+
+/* This is the main container for all the social link inputs. */
+.social-links-edit {
+  display: flex;
+  flex-direction: column; /* Stack the input groups vertically */
+  gap: 15px; /* Adds space between each social link row */
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* This styles each individual row (icon + input field). */
+.social-input-group {
+  display: flex;
+  align-items: center; /* Vertically aligns the icon with the input field */
+  gap: 10px; /* Space between the icon and the input field */
+  width: 100%;
+}
+
+/* Styles for the social media icons (LinkedIn, GitHub, etc.). */
+.social-input-group svg {
+  font-size: 1.5rem; /* Makes the icons a nice, visible size */
+  color: #4a5568;  /* A neutral, dark grey color */
+}
+
+/* Styles for the text input fields. */
+.social-input-group input {
+  flex-grow: 1; /* Allows the input to take up all available space */
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Adds a highlight effect when the user clicks into an input field. */
+.social-input-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
 
 /* --- Main Content Styling --- */
 .profile-main {
@@ -214,7 +255,7 @@
 .cancel-button {
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
@@ -270,4 +311,12 @@
   background-color: #fee2e2;
   color: #991b1b;
   border: 1px solid #fca5a5;
+}
+
+/* Add space above the Save/Cancel button container */
+.edit-buttons {
+  margin-top: 25px; /* Adjust this value to get the amount of space you like */
+  display: flex; /* This will help align the buttons if needed */
+  gap: 10px;    /* This adds a little space between the Save and Cancel buttons */
+  width: 100%;
 }
