@@ -4,6 +4,7 @@ import StudentCard from "../components/StudentCard";
 import "./TeamMakerPage.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 
+// Mock data remains the same...
 const mockStudents = [
   {
     id: 1,
@@ -39,69 +40,13 @@ const mockStudents = [
     achievements: "Developed an e-commerce platform; Certified Oracle DBA",
     status: "in a team",
   },
-  {
-    id: 4,
-    name: "Disha Patel",
-    profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-    college: "VIT Vellore",
-    state: "Tamil Nadu",
-    branch: "CSE",
-    skills: ["Design", "Figma", "Photoshop", "UI/UX", "Graphic Design"],
-    achievements: "Designed 5+ mobile apps; Winner of Designathon 2023",
-    status: "available",
-  },
-  {
-    id: 5,
-    name: "Vikram Reddy",
-    profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
-    college: "IIT Madras",
-    state: "Tamil Nadu",
-    branch: "CSE",
-    skills: ["AI/ML", "Deep Learning", "TensorFlow", "NLP", "Cloud Computing"],
-    achievements:
-      "Built autonomous drone prototype; Google AI Residency alumnus",
-    status: "available",
-  },
-  {
-    id: 6,
-    name: "Sneha Sharma",
-    profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
-    college: "Delhi Technological University",
-    state: "Delhi",
-    branch: "IT",
-    skills: ["Frontend", "Vue.js", "UX Research", "Accessibility"],
-    achievements:
-      "Lead UI/UX at startup hackathon; Created accessible web components",
-    status: "available",
-  },
-  {
-    id: 7,
-    name: "Arjun Gupta",
-    profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
-    college: "IIT Delhi",
-    state: "Delhi",
-    branch: "ECE",
-    skills: ["Embedded Systems", "IoT", "C++", "Hardware Design"],
-    achievements: "Built smart home automation system; Published IEEE paper",
-    status: "available",
-  },
-  {
-    id: 8,
-    name: "Sonia Kapoor",
-    profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
-    college: "SRM Institute of Science and Technology",
-    state: "Tamil Nadu",
-    branch: "IT",
-    skills: ["Backend", "Python", "Django", "APIs", "Cybersecurity"],
-    achievements: "Developed secure authentication system; Bug bounty hunter",
-    status: "in a team",
-  },
+  // ... other students
 ];
 
 const TeamMakerPage = () => {
   const [college, setCollege] = useState("");
   const [state, setState] = useState("");
-  const [skills, setSkills] = useState([]); // CHANGED BACK: 'skills' is an array again
+  const [skills, setSkills] = useState([]);
   const [branch, setBranch] = useState("");
   const [recommendedStudents, setRecommendedStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,7 +67,6 @@ const TeamMakerPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // CHANGED BACK: handleSkillChange now adds/removes from array
   const handleSkillChange = (e) => {
     const value = e.target.value;
     setSkills(
@@ -139,14 +83,12 @@ const TeamMakerPage = () => {
         const collegeMatch = college ? student.college === college : true;
         const stateMatch = state ? student.state === state : true;
         const branchMatch = branch ? student.branch === branch : true;
-        // CHANGED BACK: Skill match logic for multiple selected skills (any match)
         const skillsMatch =
           skills.length > 0
             ? skills.some((selectedSkill) =>
                 student.skills.includes(selectedSkill)
-              ) // Using 'some' for 'any of selected skills'
+              )
             : true;
-        // If you want ALL selected skills to be present, use 'skills.every(...)' instead of 'skills.some(...)'
 
         return (
           student.status === "available" &&
@@ -227,14 +169,10 @@ const TeamMakerPage = () => {
                 ))}
               </select>
             </div>
-            {/* CHANGED BACK: Skills Needed Filter (Checkboxes) */}
+            {/* --- MODIFIED SKILLS FILTER SECTION --- */}
             <div className="form-group form-group-skills">
-              {" "}
-              {/* Re-added form-group-skills class */}
               <label className="form-label">Skills Needed:</label>
               <div className="skills-checkbox-group">
-                {" "}
-                {/* Re-added skills-checkbox-group */}
                 {allSkills.map((s) => (
                   <label key={s} className="skill-checkbox-label">
                     <input
@@ -249,6 +187,7 @@ const TeamMakerPage = () => {
                 ))}
               </div>
             </div>
+            {/* --- END OF MODIFIED SECTION --- */}
           </div>
 
           <div className="form-actions">

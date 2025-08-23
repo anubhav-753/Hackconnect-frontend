@@ -1,10 +1,9 @@
-import React, { useContext } from "react"; // Import useContext
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
+import { AuthContext } from "../contexts/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-  // Use the useContext hook here
   const { user, logout } = useContext(AuthContext);
 
   return (
@@ -21,6 +20,12 @@ const Navbar = () => {
           </li>
           {user ? (
             <>
+              {/* Add the Team Maker link here */}
+              <li className="nav-item">
+                <NavLink to="/teammaker" className="nav-links">
+                  Team Maker
+                </NavLink>
+              </li>
               <li className="nav-item">
                 <NavLink to="/profile" className="nav-links">
                   Profile
