@@ -10,7 +10,8 @@ import HackathonDetailPage from './pages/HackathonDetailPage';
 import UserProfilePage from './pages/UserProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 import CreateHackathonPage from './pages/HackathonPage';
-import TeamMakerPage from './pages/TeamMakerPage'; // 1. Import the TeamMakerPage component
+import TeamMakerPage from './pages/TeamMakerPage';
+import PublicProfilePage from './pages/PublicProfilePage'; // <-- IMPORT NEW PAGE
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
           <Route path="/hackathons/:id" element={<HackathonDetailPage />} />
           <Route path="/create-hackathon" element={<CreateHackathonPage />} />
           <Route path="/profile" element={<UserProfilePage />} />
-          <Route path="/teammaker" element={<TeamMakerPage />} /> {/* 2. Add the new route */}
+          {/* THE FIX: New route for viewing other users' profiles */}
+          <Route path="/user/:id" element={<PublicProfilePage />} />
+          <Route path="/teammaker" element={<TeamMakerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

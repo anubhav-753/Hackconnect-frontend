@@ -12,9 +12,9 @@ import {
   FaPython,
   FaLeaf,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Imported for navigation
+import { useNavigate } from "react-router-dom";
 
-// Helper to map skills to icons for visual flair
+// Helper to map skills to icons
 const skillIconMap = {
   "AI/ML": <FaBrain />,
   Frontend: <FaCode />,
@@ -31,14 +31,22 @@ const skillIconMap = {
 
 const getSkillIcon = (skill) => skillIconMap[skill] || skillIconMap["default"];
 
-// A single, complete definition of the StudentCard component
 const StudentCard = ({ student }) => {
   const { id, name, profilePicture, college, branch, skills, status } = student;
-  const navigate = useNavigate(); // Initialize the navigate hook
+  const navigate = useNavigate();
 
-  // Function to handle the button click
+  // THE FIX: Navigate to the correct public user profile route
   const handleViewProfile = () => {
-    navigate(`/profile/${id}`); // Navigate to the specific user's profile
+    navigate(`/user/${id}`);
+  };
+
+  // THE FIX: Added a handler for sending a request
+  const handleSendRequest = () => {
+    // This is where you would implement the logic to send a connection request.
+    // For now, it will just log to the console.
+    // Example: sendTeamRequest(id).then(...).catch(...);
+    alert(`Connection request sent to ${name}! (Backend logic needed)`);
+    console.log(`Sending team-up request to student ID: ${id}`);
   };
 
   return (
@@ -82,11 +90,13 @@ const StudentCard = ({ student }) => {
       </div>
 
       <div className="student-card-actions">
-        {/* The onClick handler is now correctly added to the button */}
+        {/* THE FIX: onClick handlers are now correctly implemented */}
         <button className="btn btn-outline" onClick={handleViewProfile}>
           View Profile
         </button>
-        <button className="btn btn-gradient">Send Request</button>
+        <button className="btn btn-gradient" onClick={handleSendRequest}>
+          Send Request
+        </button>
       </div>
     </div>
   );
