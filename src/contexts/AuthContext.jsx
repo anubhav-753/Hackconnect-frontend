@@ -1,81 +1,71 @@
-// src/contexts/AuthContext.jsx
-
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
-// Export AuthContext
-export const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
+  // On initial app load, check localStorage for existing user session
   useEffect(() => {
-    const checkUser = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const { data } = await api.get("/users/me");
-        setUser(data);
-      } catch (error) {
-        // If the token is invalid/expired, remove it
-        localStorage.removeItem("authToken");
-        setUser(null);
-        console.error("User session invalid. Token removed.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkUser();
+    const storedUser = localStorage.getItem("userInfo");
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser(userData);
+      // Set the auth token for all future requests with this api instance
+      api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+    }
+    setLoading(false);
   }, []);
 
+  // Login function
   const login = async (email, password) => {
-    const { data } = await api.post("/users/login", { email, password });
-    localStorage.setItem("authToken", data.token);
-    const { token, ...userData } = data;
-    setUser(userData);
-    navigate("/hackathons");
+    try {
+      // Make API call to the backend login route
+      const { data } = await api.post("/api/users/login", { email, password });
+      // Store user info in localStorage
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      // Set the auth token for subsequent API calls
+      api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+      // Update the user state
+      setUser(data);
+      return data;
+    } catch (error) {
+      // Throw the error so the component can catch it and display a message
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      throw new Error(message);
+    }
   };
 
-  const signup = async (name, email, password) => {
-    const { data } = await api.post("/users/register", {
-      name,
-      email,
-      password,
-    });
-    localStorage.setItem("authToken", data.token);
-    const { token, ...userData } = data;
-    setUser(userData);
-    navigate("/hackathons");
-  };
-
+  // Logout function
   const logout = () => {
-    localStorage.removeItem("authToken");
+    // Remove user from localStorage and state
+    localStorage.removeItem("userInfo");
     setUser(null);
-    navigate("/login");
+    // Remove the auth header from the api instance
+    delete api.defaults.headers.common["Authorization"];
   };
 
-  const updateUser = async (profileData) => {
-    const { data } = await api.put("/users/me", profileData);
-    setUser(data);
+  const value = {
+    user,
+    login,
+    logout,
+    loading,
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, loading, login, signup, logout, updateUser }}
-    >
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-// Export the custom hook
 export const useAuth = () => {
   return useContext(AuthContext);
 };
