@@ -1,26 +1,22 @@
+// src/services/hackathonService.js
 import api from './api';
 
-// Get all active hackathons (Public)
 export const getAllHackathons = () => {
   return api.get('/hackathons');
 };
 
-// Get a single hackathon by its ID (Public)
 export const getHackathonById = (id) => {
   return api.get(`/hackathons/${id}`);
 };
 
-// Create a new hackathon (Protected)
-export const createHackathon = (data) => {
-  return api.post('/hackathons', data);
+export const createHackathon = (hackathonData) => {
+  return api.post('/hackathons', hackathonData);
 };
 
-// Update a hackathon (Protected)
-export const updateHackathon = (id, data) => {
-  return api.put(`/hackathons/${id}`, data);
+export const updateHackathon = (id, hackathonData) => {
+  return api.put(`/hackathons/${id}`, hackathonData);
 };
 
-// Delete a hackathon (Protected)
 export const deleteHackathon = (id) => {
   return api.delete(`/hackathons/${id}`);
 };

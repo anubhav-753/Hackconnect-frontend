@@ -1,12 +1,22 @@
+// src/services/api.js
 import axios from 'axios';
 
-// Create an Axios instance
 const api = axios.create({
-  // Use the environment variable for your backend URL, or a default for development
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3000',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3000/api',
 });
+
+// Add a request interceptor to include the auth token in headers
+api.interceptors.request.use(
+  (config) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (userInfo && userInfo.token) {
+      config.headers.Authorization = `Bearer ${userInfo.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;
