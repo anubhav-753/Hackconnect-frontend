@@ -1,13 +1,17 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { loginUser, registerUser } from "../services/hackathonService";
+// After the fix
+import {
+  loginUser,
+  registerUser,
+  updateUserProfile,
+} from "../services/authService";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check for user info in localStorage on initial load
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
@@ -33,8 +37,18 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // NEW: Add the updateUser function to the context
+  const updateUser = async (userData) => {
+    const { data } = await updateUserProfile(userData);
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    setUser(data);
+    return data; // Return the updated user data
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, login, signup, logout, loading, updateUser }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

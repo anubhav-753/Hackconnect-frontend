@@ -1,124 +1,125 @@
+/* src/pages/HackathonListingPage.css */
+
 /* General Page Layout */
 .page-section {
-    width: 100%;
-    padding: 40px 20px;
-    background-color: #f8f9fa; /* A light grey background for contrast */
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-    gap: 15px;
-  }
-  
+  width: 100%;
+  padding: 40px 20px;
+  background-color: #f8f9fa; /* A light grey background for contrast */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  gap: 15px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: #1a202c;
+  margin: 0;
+}
+
+.primary-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.primary-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Search Bar Styling */
+.search-bar {
+  display: flex;
+  margin-bottom: 40px;
+  gap: 10px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.search-btn {
+  padding: 12px 20px; /* Consistent padding with input */
+}
+
+/* Hackathon Category Sections */
+.hackathon-category {
+  margin-bottom: 50px;
+}
+
+.category-title {
+  font-size: 2rem;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adds space for emoji */
+}
+
+/* Hackathon List - Responsive Grid */
+.hackathon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.empty-category-message {
+  color: #718096;
+  font-style: italic;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
   .page-title {
-    font-size: 2.5rem;
-    color: #1a202c;
-    margin: 0;
-  }
-  
-  .primary-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .primary-btn:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  /* Search Bar Styling */
-  .search-bar {
-    display: flex;
-    margin-bottom: 40px;
-    gap: 10px;
-  }
-  
-  .search-input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .search-input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-  }
-  
-  .search-btn {
-    padding: 12px 20px; /* Consistent padding with input */
-  }
-  
-  
-  /* Hackathon Category Sections */
-  .hackathon-category {
-    margin-bottom: 50px;
+    font-size: 2rem;
   }
   
   .category-title {
-    font-size: 2rem;
-    color: #2d3748;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Adds space for emoji */
+    font-size: 1.75rem;
   }
   
-  /* Hackathon List - Responsive Grid */
-  .hackathon-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+  .search-bar {
+    flex-direction: column;
   }
-  
-  .empty-category-message {
-    color: #718096;
-    font-style: italic;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    text-align: center;
+}
+
+@media (max-width: 480px) {
+  .page-header {
+      justify-content: center;
+      text-align: center;
   }
-  
-  /* Media Queries for Responsiveness */
-  @media (max-width: 768px) {
-    .page-title {
-      font-size: 2rem;
-    }
-    
-    .category-title {
-      font-size: 1.75rem;
-    }
-    
-    .search-bar {
-      flex-direction: column;
-    }
-  }
-  
-  @media (max-width: 480px) {
-      .page-header {
-          justify-content: center;
-          text-align: center;
-      }
-  }
+}

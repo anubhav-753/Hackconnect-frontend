@@ -1,80 +1,97 @@
+// src/pages/SignupPage.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // useNavigate has been removed
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import "./AuthPage.css";
+import "./AuthPage.css"; // The updated CSS file
 
 function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState(""); // Use 'error' for consistency
+  const [loading, setLoading] = useState(false);
   const { signup } = useAuth();
-  // The unused navigate variable has been removed
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    setError("");
+    setLoading(true);
     try {
       await signup(name, email, password);
+      navigate("/profile"); // Redirect to profile after successful signup
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "Signup failed. Please try again.";
-      setMessage(errorMessage);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    // ... JSX remains the same
-    <div className="page-section auth-page flex-center">
-      <div className="auth-card shadow-md rounded-md">
-        <h1 className="auth-title">Create Your Account</h1>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Full Name:</label>
-            <input
-              type="text"
-              id="name"
-              className="form-input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          {message && <p className="auth-message error">{message}</p>}
-          <div className="form-actions">
-            <button type="submit" className="primary-btn form-submit-btn">
-              Sign Up
+    <div className="auth-page-container">
+      <div className="auth-wrapper">
+        {/* Branding Section */}
+        <div className="auth-branding">
+          {/* <img
+            src="/logo192.png"
+            alt="HackConnect Logo"
+            className="auth-logo"
+          /> */}
+          <h1>Join HackConnect</h1>
+          <p>Find your team and bring your ideas to life.</p>
+        </div>
+
+        {/* Form Section */}
+        <div className="auth-form-container">
+          <form onSubmit={handleSubmit}>
+            <h2>Create Your Account</h2>
+            {error && <p className="error-message">{error}</p>}
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={loading}
+                placeholder="Your Name"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                placeholder="••••••••"
+              />
+            </div>
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? "Creating Account..." : "Sign Up"}
             </button>
-          </div>
-        </form>
-        <p className="auth-switch-text">
-          Already have an account?{" "}
-          <Link to="/login" className="auth-switch-link">
-            Login
-          </Link>
-        </p>
+            <p className="auth-switch">
+              Already have an account? <Link to="/login">Login</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
