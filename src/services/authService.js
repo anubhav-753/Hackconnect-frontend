@@ -7,9 +7,10 @@ import api from './api';
  * @returns {Promise} - The axios promise.
  */
 export const loginUser = (credentials) => {
-  return api.post('/users/login', credentials);
-};
-
+    // Before: return api.post('/users/auth', credentials);
+    return api.post('/users/login', credentials); // After
+  };
+  
 /**
  * Sends a registration request to the API.
  * @param {object} userData - User's name, email, and password.
