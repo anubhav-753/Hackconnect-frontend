@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./UserProfilePage.css";
-import { FaLinkedin, FaGithub, FaGlobe, FaCamera } from "react-icons/fa";
+import { FaCamera, FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const UserProfilePage = () => {
@@ -11,12 +11,11 @@ const UserProfilePage = () => {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
 
-  // This is a safe function to set up the form state from the user object
-  const setupForm = () => {
+  // ✅ useCallback prevents useEffect warnings
+  const setupForm = useCallback(() => {
     setFormData({
       name: user.name || "",
-      profilePicture:
-        user.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
+      avatar: user.avatar || "/uploads/default.png",
       status: user.status || "available",
       bio: user.bio || "",
       achievements: user.achievements || "",
@@ -27,26 +26,22 @@ const UserProfilePage = () => {
         portfolio: user.socialLinks?.portfolio || "",
       },
     });
-  };
+  }, [user]);
 
-  // This `useEffect` hook runs when the 'user' object from context changes.
-  // It ensures that your form data is always based on the latest user info.
   useEffect(() => {
     if (user) {
       setupForm();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, setupForm]); // ✅ no missing deps warning
 
   const handleEdit = () => {
     setMessage("");
-    setupForm(); // Use the safe setup function
+    setupForm();
     setIsEditing(true);
   };
 
   const handleSave = async () => {
     try {
-      // This safely handles the case where skills might be an empty string
       const skillsArray = (formData.skills || "")
         .split(",")
         .map((s) => s.trim())
@@ -81,12 +76,12 @@ const UserProfilePage = () => {
     }
   };
 
-  const handleProfilePictureChange = (e) => {
+  const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, profilePicture: reader.result }));
+        setFormData((prev) => ({ ...prev, avatar: reader.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -106,25 +101,23 @@ const UserProfilePage = () => {
           {message}
         </p>
       )}
+
       <div className="profile-container">
         <aside className="profile-sidebar">
           <div className="profile-picture-container">
             <img
-              src={isEditing ? formData.profilePicture : user.profilePicture}
+              src={isEditing ? formData.avatar : user.avatar}
               alt={user.name}
               className="profile-picture"
             />
             {isEditing && (
-              <label
-                htmlFor="profile-picture-upload"
-                className="profile-picture-upload"
-              >
+              <label htmlFor="avatar-upload" className="profile-picture-upload">
                 <FaCamera />
                 <input
-                  id="profile-picture-upload"
+                  id="avatar-upload"
                   type="file"
                   accept="image/*"
-                  onChange={handleProfilePictureChange}
+                  onChange={handleAvatarChange}
                   style={{ display: "none" }}
                 />
               </label>
@@ -143,7 +136,6 @@ const UserProfilePage = () => {
             <h1 className="profile-name">{user.name}</h1>
           )}
 
-          {/* This part now correctly shows input fields when editing */}
           {isEditing ? (
             <div className="social-links-edit">
               <div className="social-input-group">
@@ -240,6 +232,7 @@ const UserProfilePage = () => {
               </p>
             )}
           </div>
+
           <div className="about-section">
             <h2>Bio</h2>
             {isEditing ? (
@@ -253,6 +246,7 @@ const UserProfilePage = () => {
             ) : (
               <p>{user.bio || "No bio yet."}</p>
             )}
+
             <h2>Achievements</h2>
             {isEditing ? (
               <textarea
@@ -266,6 +260,7 @@ const UserProfilePage = () => {
               <p>{user.achievements || "No achievements listed yet."}</p>
             )}
           </div>
+
           <div className="skills-section">
             <h2>Skills</h2>
             {isEditing ? (

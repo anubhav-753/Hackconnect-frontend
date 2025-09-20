@@ -1,11 +1,11 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-// After the fix
 import {
   loginUser,
   registerUser,
   updateUserProfile,
 } from "../services/authService";
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -13,23 +13,26 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      setUser(JSON.parse(userInfo));
+    try {
+      const storedUser = localStorage.getItem("userInfo");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.warn("Failed to parse userInfo from localStorage:", error);
+      localStorage.removeItem("userInfo"); // clean invalid entry
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    const { data } = await loginUser({ email, password });
-    localStorage.setItem("userInfo", JSON.stringify(data));
-    setUser(data);
+    const data = await loginUser({ email, password });
+    setUser(data); // authService already persists to localStorage
   };
 
   const signup = async (name, email, password) => {
-    const { data } = await registerUser({ name, email, password });
-    localStorage.setItem("userInfo", JSON.stringify(data));
-    setUser(data);
+    const data = await registerUser({ name, email, password });
+    setUser(data); // authService already persists
   };
 
   const logout = () => {
@@ -37,12 +40,10 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // NEW: Add the updateUser function to the context
   const updateUser = async (userData) => {
-    const { data } = await updateUserProfile(userData);
-    localStorage.setItem("userInfo", JSON.stringify(data));
-    setUser(data);
-    return data; // Return the updated user data
+    const data = await updateUserProfile(userData);
+    setUser(data); // authService already persists
+    return data;
   };
 
   return (

@@ -2,31 +2,34 @@
 import api from './api';
 
 /**
- * Sends a login request to the API.
- * @param {object} credentials - User's email and password.
- * @returns {Promise} - The axios promise.
+ * Login user
+ * @param {object} credentials - { email, password }
+ * @returns {Promise} axios response
  */
-export const loginUser = (credentials) => {
-    // Before: return api.post('/users/auth', credentials);
-    return api.post('/users/login', credentials); // After
-  };
-  
-/**
- * Sends a registration request to the API.
- * @param {object} userData - User's name, email, and password.
- * @returns {Promise} - The axios promise.
- */
-export const registerUser = (userData) => {
-  return api.post('/users/register', userData);
+export const loginUser = async (credentials) => {
+  const { data } = await api.post('/users/login', credentials);
+  localStorage.setItem('userInfo', JSON.stringify(data));
+  return data;
 };
 
 /**
- * Sends a request to update the user's profile.
- * @param {object} userData - The updated user data.
- * @returns {Promise} - The axios promise.
+ * Register user
+ * @param {object} userData - { name, email, password }
+ * @returns {Promise} axios response
  */
-export const updateUserProfile = (userData) => {
-    // The user's ID is not needed here because the backend can identify
-    // the user from the JWT token sent in the Authorization header.
-    return api.put('/users/profile', userData);
+export const registerUser = async (userData) => {
+  const { data } = await api.post('/users/register', userData);
+  localStorage.setItem('userInfo', JSON.stringify(data));
+  return data;
+};
+
+/**
+ * Update user profile
+ * @param {object} userData - { name, email, status, bio, password }
+ * @returns {Promise} axios response
+ */
+export const updateUserProfile = async (userData) => {
+  const { data } = await api.put('/users/profile', userData);
+  localStorage.setItem('userInfo', JSON.stringify(data));
+  return data;
 };
