@@ -320,3 +320,47 @@
   gap: 10px;    /* This adds a little space between the Save and Cancel buttons */
   width: 100%;
 }
+/* College, State, Branch sections */
+.college-section,
+.state-section,
+.branch-section {
+  margin-bottom: 2rem;
+}
+
+.college-section input,
+.state-section input,
+.branch-section input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.college-section input:focus,
+.state-section input:focus,
+.branch-section input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Ensures tag-style display matches Skills pills */
+.tag-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.skill-tag {
+  background-color: #e7f5ff;
+  color: #1c7ed6;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}

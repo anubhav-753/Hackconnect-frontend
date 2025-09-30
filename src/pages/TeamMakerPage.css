@@ -1,295 +1,346 @@
-/* src/pages/TeamMakerPage.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-
+/* ========== Design Tokens ========== */
 :root {
-  --font-primary: 'Poppins', sans-serif;
-  --bg-soft-gray: #f4f7f9;
+  --bg: #f8fafc;
   --card-bg: #ffffff;
-  --text-dark: #1a202c;
-  --text-light: #4a5568;
-  --border-color: #e2e8f0;
-  --primary-blue: #3a86ff;
-  --primary-purple: #8338ec;
-  --primary-gradient: linear-gradient(45deg, var(--primary-blue), var(--primary-purple));
-  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --border-radius-md: 12px;
-  --border-radius-lg: 16px;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #4f46e5;     /* indigo-600 */
+  --primary-2: #3b82f6;   /* blue-500 */
+  --gradient: linear-gradient(90deg, #6366f1, #3b82f6);
+  --radius: 12px;
+  --shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
 }
 
-body {
-  font-family: var(--font-primary);
-  background-color: var(--bg-soft-gray);
-  color: var(--text-dark);
-}
-
+/* Container + Title */
 .team-maker-page {
-  padding: 4rem 1rem;
-  background-color: var(--bg-soft-gray);
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(58, 134, 255, 0.05), transparent 30%),
-    radial-gradient(circle at 90% 80%, rgba(131, 56, 236, 0.05), transparent 40%);
-  min-height: 100vh;
-}
-
-.container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
+  background: var(--bg);
 }
 
 .page-title {
-  text-align: center;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: 2rem;
   font-weight: 800;
-  margin-bottom: 2.5rem;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text);
+  margin: 0 0 1.25rem 0;
 }
 
-/* --- Form Card --- */
+/* ========== Filters Card ========== */
 .team-maker-form-card {
   background: var(--card-bg);
-  padding: 2rem 2.5rem;
-  margin: 0 auto 3.5rem auto;
-  max-width: 900px;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-medium);
-  border: 1px solid var(--border-color);
-}
-
-.form-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-/* --- Form Grid & Elements --- */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #eef2f7;
+  box-shadow: var(--shadow);
   margin-bottom: 2rem;
 }
 
-.form-group {
+.filters-header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
 }
 
-.form-label {
-  font-size: 0.9rem;
+.team-maker-form-card h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .form-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+.form-group label {
+  display: block;
+  font-size: .9rem;
+  color: var(--muted);
+  margin-bottom: .35rem;
   font-weight: 600;
-  color: var(--text-light);
-  margin-bottom: 0.5rem;
 }
 
-.form-select-wrapper {
-  position: relative;
-}
-
-.form-select {
+.form-group select {
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
-  font-size: 1rem;
-  font-family: var(--font-primary);
-  background-color: #fff;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: .65rem .9rem;
+  color: var(--text);
+  font-size: .95rem;
+  transition: border-color .2s ease, box-shadow .2s ease;
   appearance: none;
-  -webkit-appearance: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right .7rem center;
+  background-size: 18px 18px;
 }
-
-.form-select-wrapper::after {
-  content: '▼';
-  font-size: 0.8rem;
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: var(--text-light);
-}
-
-.form-select:focus {
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+.form-group select:focus {
   outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241, .14);
 }
 
-/* --- Skills Pill Checkboxes --- */
-.form-group-full {
-  grid-column: 1 / -1;
-}
-
+/* ========== Skill Pills ========== */
 .skills-checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 0.5rem;
+  gap: .7rem;
+  margin-top: .35rem;
 }
 
-.skill-checkbox-input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.skill-pill-label {
-  cursor: pointer;
-}
-
-.skill-pill-text {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-soft-gray);
-  border: 1px solid var(--border-color);
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-light);
-  user-select: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.skill-icon {
-  font-size: 1.1em;
-}
-
-.skill-pill-label:hover .skill-pill-text {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
-  border-color: var(--primary-blue);
-}
-
-.skill-checkbox-input:checked + .skill-pill-text {
-  background: var(--primary-gradient);
-  color: white;
-  border-color: transparent;
-  box-shadow: var(--shadow-medium);
-}
-
-.skill-checkbox-input:focus-visible + .skill-pill-text {
-  outline: 2px solid var(--primary-blue);
-  outline-offset: 2px;
-}
-
-
-/* --- Form Actions --- */
-.form-actions {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-/* --- General Button Styles & CTA --- */
-.btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 9999px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: var(--font-primary);
-  text-decoration: none;
-  display: inline-block;
+.skills-checkbox-group label {
   position: relative;
-  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
 }
 
-.btn-gradient {
-  background: var(--primary-gradient);
-  color: white;
-  padding: 0.8rem 2.5rem;
-  font-size: 1.1rem;
-  box-shadow: var(--shadow-soft);
+.skills-checkbox-group input { display: none; }
+
+.skill-pill-content {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1rem;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-weight: 600;
+  font-size: .85rem;
+  transition: all .18s ease;
+  user-select: none;
 }
 
-.btn-gradient:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-medium);
+.skill-pill-content .skill-icon { font-size: 1rem; }
+
+.skills-checkbox-group label:hover .skill-pill-content {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
 }
 
-.btn-gradient::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
+.skills-checkbox-group input:checked + .skill-pill-content {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(79,70,229,.25);
 }
 
-.btn-gradient:active::after {
-    transition: 0s;
-    transform: scale(200, 200) translate(-50%, -50%);
-    opacity: 1;
+/* Filter actions */
+.form-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
 }
 
-
-/* --- Recommended Students Section --- */
-.section-subtitle {
-  text-align: center;
-  font-size: 2rem;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  padding: .65rem 1.1rem;
+  border-radius: 10px;
   font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 2.5rem;
+  font-size: .95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .18s ease;
 }
 
+.btn--primary {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+}
+.btn--primary:hover { filter: brightness(.98); }
+
+.btn--ghost {
+  background: #fff;
+  color: var(--primary);
+  border: 1px solid #e5e7eb;
+}
+.btn--ghost:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.btn--sm { padding: .45rem .8rem; font-size: .85rem; }
+
+/* ========== Recommended Students ========== */
+
+.section-subtitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 1.25rem 0 1rem;
+}
+
+/* Responsive grid */
 .student-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 
-.no-results-message {
-  text-align: center;
-  font-size: 1.1rem;
-  color: var(--text-light);
-  padding: 2rem;
-  background-color: var(--card-bg);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-soft);
+/* Card */
+.student-card {
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.student-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(17, 24, 39, 0.1);
 }
 
-
-/* --- Responsive Design --- */
-@media (min-width: 768px) {
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Header grid */
+.student-card__header {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-@media (min-width: 1024px) {
-  .form-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* Crucial: Keep avatar small; this prevents giant images */
+.student-card__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f3f4f6;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(17, 24, 39, 0.08);
 }
 
-@media (max-width: 767px) {
-  .team-maker-page {
-    padding: 2rem 0.5rem;
-  }
-  .team-maker-form-card {
-    padding: 1.5rem;
-  }
-  .page-title {
-    margin-bottom: 2rem;
-  }
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .btn-gradient {
-    width: 100%;
-  }
+.student-card__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+.student-card__meta {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0.15rem 0 0;
+}
+
+/* Status badge */
+.student-card__status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+}
+.student-card__status.available {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+.student-card__status.unavailable {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* Divider */
+.student-card__divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0.75rem 0;
+}
+
+/* Skills chips */
+.student-card__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.chip {
+  font-size: 0.75rem;
+  color: #4338ca;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  padding: 0.25rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.muted {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+/* Social icons */
+.student-card__social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+.social-icon {
+  width: 34px;
+  height: 34px;
+  background: #f3f4f6;
+  color: #6b7280;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  transition: all 0.15s ease;
+}
+.social-icon:hover {
+  background: #eef2ff;
+  color: var(--primary);
+  border-color: #c7d2fe;
+}
+
+/* Actions */
+.student-card__actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+.btn--ghost {
+  background: #fff;
+  color: var(--primary);
+  border: 1px solid #e5e7eb;
+}
+.btn--ghost:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+.btn--primary {
+  flex: 1;
+  color: #ffffff;
+  background: var(--gradient);
+  border: none;
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+}
+.btn--primary:hover { filter: brightness(.98); }
+
+/* Small screens */
+@media (max-width: 768px) {
+  .student-card { padding: .9rem; }
+  .student-card__header { grid-template-columns: 48px 1fr auto; }
+  .student-card__avatar { width: 48px; height: 48px; }
 }

@@ -1,100 +1,106 @@
 import React from "react";
-import "./StudentCard.css";
-import {
-  FaCode,
-  FaBrain,
-  FaCamera,
-  FaDatabase,
-  FaReact,
-  FaPaintBrush,
-  FaMobileAlt,
-  FaJava,
-  FaPython,
-  FaLeaf,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
 
-// Helper to map skills to icons
-const skillIconMap = {
-  "AI/ML": <FaBrain />,
-  Frontend: <FaCode />,
-  Backend: <FaDatabase />,
-  "Computer Vision": <FaCamera />,
-  React: <FaReact />,
-  "UI/UX": <FaPaintBrush />,
-  "Mobile Dev": <FaMobileAlt />,
-  Java: <FaJava />,
-  Python: <FaPython />,
-  "Spring Boot": <FaLeaf />,
-  default: <FaCode />,
-};
+const StudentCard = ({ student, onSendRequest }) => {
+  const status = (student?.status || "Not Available").toLowerCase();
+  const isAvailable =
+    status.includes("available") || status === "available" || status === "open";
 
-const getSkillIcon = (skill) => skillIconMap[skill] || skillIconMap["default"];
-
-const StudentCard = ({ student }) => {
-  const { id, name, profilePicture, college, branch, skills, status } = student;
-  const navigate = useNavigate();
-
-  // THE FIX: Navigate to the correct public user profile route
-  const handleViewProfile = () => {
-    navigate(`/user/${id}`);
-  };
-
-  // THE FIX: Added a handler for sending a request
-  const handleSendRequest = () => {
-    // This is where you would implement the logic to send a connection request.
-    // For now, it will just log to the console.
-    // Example: sendTeamRequest(id).then(...).catch(...);
-    alert(`Connection request sent to ${name}! (Backend logic needed)`);
-    console.log(`Sending team-up request to student ID: ${id}`);
-  };
+  const avatarSrc =
+    student?.avatar && student.avatar.trim() !== ""
+      ? student.avatar
+      : "/default-avatar.png";
 
   return (
-    <div
-      className="student-card"
-      tabIndex="0"
-      aria-labelledby={`student-name-${id}`}
-    >
-      <div className="student-card-header">
-        <img src={profilePicture} alt={name} className="student-profile-img" />
-        <div className="student-info">
-          <h3 id={`student-name-${id}`} className="student-name">
-            {name}
-          </h3>
-          <p className="student-details">
-            {college} • {branch}
+    <div className="student-card">
+      <div className="student-card__header">
+        <img
+          src={avatarSrc}
+          alt={student?.name || "Student Avatar"}
+          className="student-card__avatar"
+          onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
+        />
+        <div className="student-card__title">
+          <h3 className="student-card__name">{student?.name || "Unknown"}</h3>
+          <p className="student-card__meta">
+            {student?.college || "—"}
+            {student?.branch ? ` • ${student.branch}` : ""}
           </p>
         </div>
         <span
-          className={`status-badge ${
-            status === "available" ? "status-available" : "status-busy"
+          className={`student-card__status ${
+            isAvailable ? "available" : "unavailable"
           }`}
         >
-          {status === "available" ? "Available" : "In a Team"}
+          {isAvailable ? "Available" : "Not Available"}
         </span>
       </div>
 
-      <div className="student-card-body">
-        <h4 className="skills-title">Skills</h4>
-        <div className="skills-container">
-          {skills.slice(0, 5).map((skill) => (
-            <span key={skill} className="skill-tag">
-              {getSkillIcon(skill)}
-              {skill}
-            </span>
-          ))}
-          {skills.length > 5 && (
-            <span className="skill-tag-more">+{skills.length - 5} more</span>
+      <div className="student-card__divider" />
+
+      <div className="student-card__block">
+        <h4 className="student-card__label">Skills</h4>
+        <div className="student-card__skills">
+          {Array.isArray(student?.skills) && student.skills.length > 0 ? (
+            student.skills.map((s, idx) => (
+              <span className="chip" key={`${s}-${idx}`}>
+                {s}
+              </span>
+            ))
+          ) : (
+            <span className="muted">No skills yet</span>
           )}
         </div>
       </div>
 
-      <div className="student-card-actions">
-        {/* THE FIX: onClick handlers are now correctly implemented */}
-        <button className="btn btn-outline" onClick={handleViewProfile}>
+      <div className="student-card__social">
+        {student?.socialLinks?.linkedin && (
+          <a
+            href={student.socialLinks.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="social-icon"
+            title="LinkedIn"
+          >
+            <FaLinkedin />
+          </a>
+        )}
+        {student?.socialLinks?.github && (
+          <a
+            href={student.socialLinks.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            className="social-icon"
+            title="GitHub"
+          >
+            <FaGithub />
+          </a>
+        )}
+        {student?.socialLinks?.portfolio && (
+          <a
+            href={student.socialLinks.portfolio}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Portfolio"
+            className="social-icon"
+            title="Portfolio"
+          >
+            <FaGlobe />
+          </a>
+        )}
+      </div>
+
+      <div className="student-card__actions">
+        <a href={`/profile/${student?._id}`} className="btn btn--ghost">
           View Profile
-        </button>
-        <button className="btn btn-gradient" onClick={handleSendRequest}>
+        </a>
+        <button
+          type="button"
+          className="btn btn--primary"
+          onClick={onSendRequest}
+        >
           Send Request
         </button>
       </div>

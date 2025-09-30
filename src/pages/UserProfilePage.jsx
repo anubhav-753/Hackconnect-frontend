@@ -11,7 +11,7 @@ const UserProfilePage = () => {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
 
-  // ✅ useCallback prevents useEffect warnings
+  // ✅ setup form with callback
   const setupForm = useCallback(() => {
     setFormData({
       name: user.name || "",
@@ -20,6 +20,9 @@ const UserProfilePage = () => {
       bio: user.bio || "",
       achievements: user.achievements || "",
       skills: (user.skills || []).join(", "),
+      college: user.college || "",
+      state: user.state || "",
+      branch: user.branch || "",
       socialLinks: {
         linkedin: user.socialLinks?.linkedin || "",
         github: user.socialLinks?.github || "",
@@ -32,7 +35,7 @@ const UserProfilePage = () => {
     if (user) {
       setupForm();
     }
-  }, [user, setupForm]); // ✅ no missing deps warning
+  }, [user, setupForm]);
 
   const handleEdit = () => {
     setMessage("");
@@ -103,6 +106,7 @@ const UserProfilePage = () => {
       )}
 
       <div className="profile-container">
+        {/* LEFT SIDEBAR */}
         <aside className="profile-sidebar">
           <div className="profile-picture-container">
             <img
@@ -211,6 +215,7 @@ const UserProfilePage = () => {
           )}
         </aside>
 
+        {/* MAIN SECTION */}
         <main className="profile-main">
           <div className="status-section">
             <h2>Status</h2>
@@ -282,6 +287,75 @@ const UserProfilePage = () => {
                   ))
                 ) : (
                   <span>No skills listed yet.</span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* College Section */}
+          <div className="college-section">
+            <h2>College</h2>
+            {isEditing ? (
+              <input
+                type="text"
+                name="college"
+                value={formData.college || ""}
+                onChange={handleFormChange}
+                className="skills-input"
+                placeholder="Enter your college"
+              />
+            ) : (
+              <div className="tag-display">
+                {user.college ? (
+                  <span className="skill-tag">{user.college}</span>
+                ) : (
+                  <span>No college specified</span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* State Section */}
+          <div className="state-section">
+            <h2>State</h2>
+            {isEditing ? (
+              <input
+                type="text"
+                name="state"
+                value={formData.state || ""}
+                onChange={handleFormChange}
+                className="skills-input"
+                placeholder="Enter your state"
+              />
+            ) : (
+              <div className="tag-display">
+                {user.state ? (
+                  <span className="skill-tag">{user.state}</span>
+                ) : (
+                  <span>No state specified</span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Branch Section */}
+          <div className="branch-section">
+            <h2>Branch</h2>
+            {isEditing ? (
+              <input
+                type="text"
+                name="branch"
+                value={formData.branch || ""}
+                onChange={handleFormChange}
+                className="skills-input"
+                placeholder="Enter your branch"
+              />
+            ) : (
+              <div className="tag-display">
+                {user.branch ? (
+                  <span className="skill-tag">{user.branch}</span>
+                ) : (
+                  <span>No branch specified</span>
                 )}
               </div>
             )}
