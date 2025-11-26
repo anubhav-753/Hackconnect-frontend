@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
 
 const StudentCard = ({ student, onSendRequest }) => {
+  const [sent, setSent] = useState(false);
+
+  const handleClick = async () => {
+    const success = await onSendRequest(student._id);
+    if (success) setSent(true);
+  };
+
   const status = (student?.status || "Not Available").toLowerCase();
   const isAvailable =
     status.includes("available") || status === "available" || status === "open";
@@ -58,23 +66,13 @@ const StudentCard = ({ student, onSendRequest }) => {
           <a
             href={student.socialLinks.linkedin}
             target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="social-icon"
-            title="LinkedIn"
+            rel="noreferrer"
           >
             <FaLinkedin />
           </a>
         )}
         {student?.socialLinks?.github && (
-          <a
-            href={student.socialLinks.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="social-icon"
-            title="GitHub"
-          >
+          <a href={student.socialLinks.github} target="_blank" rel="noreferrer">
             <FaGithub />
           </a>
         )}
@@ -82,10 +80,7 @@ const StudentCard = ({ student, onSendRequest }) => {
           <a
             href={student.socialLinks.portfolio}
             target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Portfolio"
-            className="social-icon"
-            title="Portfolio"
+            rel="noreferrer"
           >
             <FaGlobe />
           </a>
@@ -93,15 +88,16 @@ const StudentCard = ({ student, onSendRequest }) => {
       </div>
 
       <div className="student-card__actions">
-        <a href={`/profile/${student?._id}`} className="btn btn--ghost">
+        <Link to={`/profile/${student._id}`} className="btn btn--ghost">
           View Profile
-        </a>
+        </Link>
         <button
           type="button"
-          className="btn btn--primary"
-          onClick={onSendRequest}
+          className={`btn ${sent ? "btn--disabled sent-btn" : "btn--primary"}`}
+          onClick={handleClick}
+          disabled={sent}
         >
-          Send Request
+          {sent ? "Request Sent" : "Send Request"}
         </button>
       </div>
     </div>

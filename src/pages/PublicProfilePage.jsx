@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../services/api"; // Your axios instance
-import "./UserProfilePage.css"; // We can reuse the same CSS
+import api from "../services/api";
+import "./UserProfilePage.css";
 import { FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
 import LoadingSpinner from "../components/LoadingSpinner";
 import NotFoundPage from "./NotFoundPage";
 
 const PublicProfilePage = () => {
-  const { id } = useParams(); // Get the user ID from the URL
+  const { id } = useParams();
   const [profileUser, setProfileUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,8 +17,8 @@ const PublicProfilePage = () => {
       setLoading(true);
       setError(null);
       try {
-        // You'll need a backend route like GET /api/users/:id
-        const { data } = await api.get(`/users/${id}`);
+        // ✅ call the public route, not the protected admin path
+        const { data } = await api.get(`/users/public/${id}`);
         setProfileUser(data);
       } catch (err) {
         console.error("Failed to fetch user profile:", err);
@@ -32,16 +32,17 @@ const PublicProfilePage = () => {
   }, [id]);
 
   if (loading) return <LoadingSpinner />;
-  if (error || !profileUser) return <NotFoundPage />; // Show 404 if user not found
+  if (error || !profileUser) return <NotFoundPage />;
 
   return (
     <div className="user-profile-page">
       <div className="profile-container">
+        {/* Sidebar */}
         <aside className="profile-sidebar">
           <div className="profile-picture-container">
             <img
               src={
-                profileUser.profilePicture ||
+                profileUser.avatar ||
                 "https://randomuser.me/api/portraits/lego/1.jpg"
               }
               alt={profileUser.name}
@@ -86,6 +87,7 @@ const PublicProfilePage = () => {
           </Link>
         </aside>
 
+        {/* Main profile data */}
         <main className="profile-main">
           <div className="status-section">
             <h2>Status</h2>
@@ -95,16 +97,20 @@ const PublicProfilePage = () => {
                 : "Not Available"}
             </p>
           </div>
+
           <div className="about-section">
             <h2>Bio</h2>
             <p>{profileUser.bio || "No bio yet."}</p>
+
             <h2>Achievements</h2>
             <p>{profileUser.achievements || "No achievements listed yet."}</p>
           </div>
+
           <div className="skills-section">
             <h2>Skills</h2>
             <div className="skills-grid">
-              {profileUser.skills && profileUser.skills.length > 0 ? (
+              {Array.isArray(profileUser.skills) &&
+              profileUser.skills.length > 0 ? (
                 profileUser.skills.map((skill, index) => (
                   <span key={index} className="skill-tag">
                     {skill}

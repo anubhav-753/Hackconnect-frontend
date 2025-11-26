@@ -344,3 +344,15 @@
   .student-card__header { grid-template-columns: 48px 1fr auto; }
   .student-card__avatar { width: 48px; height: 48px; }
 }
+.sent-btn {
+  background-color: #9aa0a6;
+  color: #fff;
+  cursor: not-allowed;
+  border: none;
+  opacity: 0.8;
+  transition: background-color 0.3s ease;
+}
+
+.sent-btn:hover {
+  background-color: #9aa0a6;
+}

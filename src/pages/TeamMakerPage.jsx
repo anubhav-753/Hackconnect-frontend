@@ -8,17 +8,14 @@ import {
 } from "../services/authService";
 
 const TeamMakerPage = () => {
-  // Filters
   const [college, setCollege] = useState("");
   const [state, setState] = useState("");
   const [skills, setSkills] = useState([]);
   const [branch, setBranch] = useState("");
-
-  // Data
   const [recommendedStudents, setRecommendedStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Static lists
   const allColleges = [
     "IIT Bombay",
     "IIT Delhi",
@@ -90,7 +87,6 @@ const TeamMakerPage = () => {
     "Aerospace Engineering",
   ].sort();
 
-  // Skills (static list for a consistent UI)
   const allSkills = [
     "AI/ML",
     "Backend",
@@ -110,7 +106,6 @@ const TeamMakerPage = () => {
     "UI/UX",
   ];
 
-  // Emoji map
   const skillIcons = {
     "AI/ML": "🧠",
     Backend: "⚙️",
@@ -131,7 +126,9 @@ const TeamMakerPage = () => {
     Default: "⭐",
   };
 
-  // Load data
+  const normalizeSkill = (skill) =>
+    skill?.toLowerCase().replace(/\./g, "").replace(/\s+/g, "") || "";
+
   useEffect(() => {
     loadRecommended();
   }, []);
@@ -141,13 +138,13 @@ const TeamMakerPage = () => {
     try {
       const students = await getRecommendedStudents(filters);
       setRecommendedStudents(students);
+      setFilteredStudents(students);
     } catch (e) {
       console.error("Failed to fetch students", e);
     }
     setLoading(false);
   };
 
-  // Skill pill toggle
   const handleSkillChange = (e) => {
     const { value, checked } = e.target;
     setSkills((prev) =>
@@ -155,18 +152,34 @@ const TeamMakerPage = () => {
     );
   };
 
-  // Apply filters
-  const handleFindTeammates = () => {
+  const handleFindTeammates = async () => {
     const filters = {
       college: college || undefined,
       state: state || undefined,
       branch: branch || undefined,
-      skills: skills.length > 0 ? skills.join(",") : undefined,
+      skills:
+        skills.length > 0
+          ? skills
+              .map((s) =>
+                s.toLowerCase().replace(/\./g, "").replace(/\s+/g, "")
+              )
+              .join(",")
+          : undefined,
     };
-    loadRecommended(filters);
+
+    await loadRecommended(filters);
+
+    setFilteredStudents(() => {
+      if (skills.length === 0) return recommendedStudents;
+      return recommendedStudents.filter((student) => {
+        const studentSkills = (student.skills || []).map(normalizeSkill);
+        return skills.every((sel) =>
+          studentSkills.includes(normalizeSkill(sel))
+        );
+      });
+    });
   };
 
-  // Clear filters
   const clearFilters = () => {
     setCollege("");
     setState("");
@@ -175,23 +188,24 @@ const TeamMakerPage = () => {
     loadRecommended({});
   };
 
-  // Send request
+  // ✅ Return success flag so button can update
   const handleSendRequest = async (userId) => {
     try {
       const res = await sendConnectionRequest(userId);
       alert(res.message);
+      return true;
     } catch (err) {
       alert("Failed to send request. Maybe already sent?");
+      return false;
     }
   };
 
   return (
     <div className="team-maker-page">
       <div className="container">
-        {/* Title */}
         <h1 className="page-title">Find Your Dream Team</h1>
 
-        {/* Filters Card */}
+        {/* ---------------- Filters ---------------- */}
         <div className="team-maker-form-card">
           <div className="filters-header">
             <h2>Filters</h2>
@@ -209,9 +223,7 @@ const TeamMakerPage = () => {
               >
                 <option value="">Any College</option>
                 {allColleges.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
+                  <option key={c}>{c}</option>
                 ))}
               </select>
             </div>
@@ -221,9 +233,7 @@ const TeamMakerPage = () => {
               <select value={state} onChange={(e) => setState(e.target.value)}>
                 <option value="">Any State</option>
                 {allStates.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
+                  <option key={s}>{s}</option>
                 ))}
               </select>
             </div>
@@ -236,15 +246,12 @@ const TeamMakerPage = () => {
               >
                 <option value="">Any Branch</option>
                 {allBranches.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
+                  <option key={b}>{b}</option>
                 ))}
               </select>
             </div>
           </div>
 
-          {/* Skills Pills */}
           <div className="form-group">
             <label>Skills Needed</label>
             <div className="skills-checkbox-group">
@@ -274,18 +281,18 @@ const TeamMakerPage = () => {
           </div>
         </div>
 
-        {/* Recommended Students */}
+        {/* ---------------- Recommended Students ---------------- */}
         <h2 className="section-subtitle">Recommended Students</h2>
         {loading ? (
           <LoadingSpinner />
         ) : (
           <div className="student-card-grid">
-            {recommendedStudents.length > 0 ? (
-              recommendedStudents.map((student) => (
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => (
                 <StudentCard
                   key={student._id}
                   student={student}
-                  onSendRequest={() => handleSendRequest(student._id)}
+                  onSendRequest={handleSendRequest}
                 />
               ))
             ) : (
