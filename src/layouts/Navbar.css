@@ -229,4 +229,14 @@
         opacity: 0;
         transform: translateY(-100%);
     }
+    .navbar-auth-buttons-desktop {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .navbar-auth-buttons-desktop .notif-wrapper {
+        position: relative;
+        margin-right: 8px;
+      }
 }

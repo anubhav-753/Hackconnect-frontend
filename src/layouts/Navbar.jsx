@@ -1,8 +1,8 @@
-// src/layouts/Navbar.jsx
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { FaBars, FaTimes } from "react-icons/fa";
+import NotificationCenter from "../components/NotificationCenter"; // ✅ new import
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -43,6 +43,10 @@ const Navbar = () => {
             {user ? (
               <>
                 <span className="navbar-welcome-text">Hi, {user.name}!</span>
+
+                {/* ✅ Notification Bell */}
+                <NotificationCenter />
+
                 <NavLink to="/profile" className="navbar-profile-link">
                   Profile
                 </NavLink>
@@ -77,6 +81,7 @@ const Navbar = () => {
           {user && (
             <p className="navbar-mobile-welcome-text">Hi, {user.name}!</p>
           )}
+
           <div className="navbar-mobile-links">
             <NavLink
               to="/hackathons"
@@ -92,6 +97,7 @@ const Navbar = () => {
             >
               Team Maker
             </NavLink>
+
             {user && (
               <NavLink
                 to="/profile"
@@ -102,6 +108,7 @@ const Navbar = () => {
               </NavLink>
             )}
           </div>
+
           <div className="navbar-mobile-auth-buttons">
             {user ? (
               <button
