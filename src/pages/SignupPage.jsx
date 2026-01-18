@@ -2,27 +2,34 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import "./AuthPage.css"; // The updated CSS file
+import "./AuthPage.css";
 
 function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Use 'error' for consistency
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signup } = useAuth();
+
+  // ✅ use `register` (the function that actually exists in AuthContext)
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
-      await signup(name, email, password);
-      navigate("/profile"); // Redirect to profile after successful signup
+      // ✅ pass an object, since AuthContext.register expects formData
+      await register({ name, email, password });
+      navigate("/profile");
     } catch (err) {
+      console.error("Signup error:", err);
       const errorMessage =
-        err.response?.data?.message || "Signup failed. Please try again.";
+        err.response?.data?.message ||
+        err.message ||
+        "Signup failed. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -32,22 +39,16 @@ function SignupPage() {
   return (
     <div className="auth-page-container">
       <div className="auth-wrapper">
-        {/* Branding Section */}
         <div className="auth-branding">
-          {/* <img
-            src="/logo192.png"
-            alt="HackConnect Logo"
-            className="auth-logo"
-          /> */}
           <h1>Join HackConnect</h1>
           <p>Find your team and bring your ideas to life.</p>
         </div>
 
-        {/* Form Section */}
         <div className="auth-form-container">
           <form onSubmit={handleSubmit}>
             <h2>Create Your Account</h2>
             {error && <p className="error-message">{error}</p>}
+
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
               <input
@@ -60,6 +61,7 @@ function SignupPage() {
                 placeholder="Your Name"
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -72,6 +74,7 @@ function SignupPage() {
                 placeholder="you@example.com"
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
@@ -84,9 +87,11 @@ function SignupPage() {
                 placeholder="••••••••"
               />
             </div>
+
             <button type="submit" className="auth-button" disabled={loading}>
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
+
             <p className="auth-switch">
               Already have an account? <Link to="/login">Login</Link>
             </p>

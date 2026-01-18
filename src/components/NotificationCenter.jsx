@@ -1,93 +1,105 @@
 import React, { useEffect, useState } from "react";
-import api from "../services/api";   // ← your axios instance
-import { FaBell, FaUserPlus, FaCheckCircle } from "react-icons/fa";
+import api from "../services/api";
+import { useAuth } from "../contexts/AuthContext"; // Import useAuth
+import {
+  FaBell,
+  FaUserPlus,
+  FaCheckCircle,
+  FaExclamationCircle,
+} from "react-icons/fa";
 import "./NotificationCenter.css";
 
 const NotificationCenter = () => {
+  const { user, socket } = useAuth(); // Get socket from context
   const [notifications, setNotifications] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  // Load notifications from backend
-  const fetchNotifications = async () => {
-    try {
-      setLoading(true);
-      const { data } = await api.get("/notifications");
-      setNotifications(data);
-    } catch (err) {
-      console.error("Failed to load notifications:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // 1. Fetch old notifications from Database
   useEffect(() => {
-    fetchNotifications();
-  }, []);
+    const fetchExistingNotifications = async () => {
+      if (user) {
+        try {
+          const { data } = await api.get("/notifications");
+          setNotifications(data);
+          setUnreadCount(data.filter((n) => !n.isRead).length);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+        }
+      }
+    };
+    fetchExistingNotifications();
+  }, [user]);
 
-  const markAllAsRead = async () => {
-    try {
-      await api.put("/notifications/mark-read");
-      fetchNotifications();
-    } catch (err) {
-      console.error("Error marking read:", err);
+  // 2. Listen for Real-Time Socket Events
+  useEffect(() => {
+    if (!socket) return;
+
+    // Listen for 'newNotification' event from backend
+    socket.on("newNotification", (newNotif) => {
+      // Add new notification to list
+      setNotifications((prev) => [newNotif, ...prev]);
+      // Increase badge count
+      setUnreadCount((prev) => prev + 1);
+    });
+
+    // Cleanup listener on unmount
+    return () => {
+      socket.off("newNotification");
+    };
+  }, [socket]);
+
+  const markAsRead = async () => {
+    if (unreadCount > 0) {
+      try {
+        await api.put("/notifications/mark-read");
+        setUnreadCount(0);
+        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      } catch (error) {
+        console.error("Failed to mark notifications as read");
+      }
     }
+    setIsOpen(!isOpen);
   };
 
   return (
-    <div className="notif-wrapper">
-      {/* Bell Icon */}
-      <button className="notif-icon" onClick={() => setOpen(!open)}>
-        <FaBell />
-        {/* red dot indicator if unread notifications */}
-        {notifications.some((n) => !n.read) && <span className="notif-dot"></span>}
-      </button>
+    <div className="notification-container">
+      <div className="notification-icon" onClick={markAsRead}>
+        <FaBell size={24} />
+        {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+      </div>
 
-      {open && (
-        <div className="notif-dropdown">
-          <div className="notif-header">
-            <h4>Notifications</h4>
-            {notifications.length > 0 && (
-              <button className="mark-read" onClick={markAllAsRead}>
-                Mark all as read
-              </button>
-            )}
-          </div>
-
-          {loading && <p className="notif-msg">Loading...</p>}
-          {!loading && notifications.length === 0 && (
-            <p className="notif-msg">No notifications yet.</p>
+      {isOpen && (
+        <div className="notification-dropdown">
+          <h3>Notifications</h3>
+          {notifications.length === 0 ? (
+            <p className="no-notif">No notifications yet.</p>
+          ) : (
+            <ul>
+              {notifications.map((notif, index) => (
+                <li key={index} className={notif.isRead ? "read" : "unread"}>
+                  <span className="notif-icon">
+                    {notif.type === "connection_request" ? (
+                      <FaUserPlus className="text-blue-500" />
+                    ) : notif.type === "connection_accepted" ? (
+                      <FaCheckCircle className="text-green-500" />
+                    ) : (
+                      <FaExclamationCircle className="text-yellow-500" />
+                    )}
+                  </span>
+                  <div className="notif-content">
+                    <p>{notif.message}</p>
+                    <span className="notif-time">
+                      {new Date(notif.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
-
-          {notifications.map((n) => (
-            <div
-              key={n._id}
-              className={`notif-item ${n.read ? "read" : "unread"}`}
-            >
-              <img
-                className="notif-avatar"
-                src={n.sender?.avatar || "/default-avatar.png"}
-                alt={n.sender?.name}
-              />
-              <div className="notif-text">
-                <p>{n.message}</p>
-                <small>
-                  {new Date(n.createdAt).toLocaleDateString()} • 
-                  {new Date(n.createdAt).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </small>
-              </div>
-
-              {n.type === "request-sent" && (
-                <FaUserPlus color="#2563eb" title="Request Sent" />
-              )}
-              {n.type === "request-accepted" && (
-                <FaCheckCircle color="#16a34a" title="Request Accepted" />
-              )}
-            </div>
-          ))}
         </div>
       )}
     </div>
