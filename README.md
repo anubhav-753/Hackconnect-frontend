@@ -1,6 +1,3 @@
-Here is a concise and detailed README for your **HackConnect** frontend, structured to showcase the technical stack and features while providing clear placeholders for your images.
-
----
 
 # 🚀 HackConnect: Find Your Dream Team
 
