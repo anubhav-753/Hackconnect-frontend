@@ -4,7 +4,7 @@ import { getMyChats, getChatMessages, sendMessage, accessChat } from "../service
 import { searchUsers } from "../services/authService"; // Import search
 import "./ChatPage.css";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { FaPaperPlane, FaArrowLeft, FaSearch, FaCommentDots, FaUserPlus } from "react-icons/fa";
+import { FaPaperPlane, FaArrowLeft, FaSearch } from "react-icons/fa";
 
 const ChatPage = () => {
   const { user, socket } = useAuth();
