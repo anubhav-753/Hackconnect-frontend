@@ -1,70 +1,88 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🚀 HackConnect: Find Your Dream Team
 
-## Available Scripts
+HackConnect is a modern full-stack platform designed to help students and developers find the perfect teammates for hackathons. It streamlines the collaboration process by matching skills, interests, and project goals.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+### 📷 Preview
+<img width="1900" height="860" alt="Screenshot 2026-02-09 121427" src="https://github.com/user-attachments/assets/ef096cce-ff7a-4380-84f0-01fee65e56a7" />
+<img width="1899" height="864" alt="Screenshot 2026-02-09 121507" src="https://github.com/user-attachments/assets/a8b92e5a-528f-44cc-9aac-2925bff1d4f2" />
+<img width="1894" height="858" alt="Screenshot 2026-02-09 121656" src="https://github.com/user-attachments/assets/52cabb03-e8fc-49f7-ba8d-a716890faaa4" />
+<img width="1905" height="865" alt="Screenshot 2026-02-09 121634" src="https://github.com/user-attachments/assets/85cb61b1-1f22-4995-ab0e-22ae0b68969a" />
+<img width="1880" height="861" alt="Screenshot 2026-02-09 121747" src="https://github.com/user-attachments/assets/1e4a670e-a657-45ff-96af-5d62b718c97b" />
+<img width="1886" height="858" alt="Screenshot 2026-02-09 121726" src="https://github.com/user-attachments/assets/e6471078-e100-4645-97c2-0f36d2fe8641" />
+<img width="1893" height="866" alt="Screenshot 2026-02-09 121559" src="https://github.com/user-attachments/assets/aecc642d-4ee8-477a-b9fc-5ff982fc0538" />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### ✨ Key Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **Intelligent Recommendations**: Discover potential teammates based on skill compatibility.
+* **Interactive 3D Elements**: Enhanced UI/UX using `Three.js` and `React Three Fiber`.
+* **Real-time Communication**: Integrated chat system powered by `Socket.io`.
+* **Hackathon Management**: Browse, create, and manage hackathon listings seamlessly.
+* **Dynamic Animations**: Smooth transitions and effects powered by `GSAP`.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🛠️ Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* **Frontend**: React.js (v18.3)
+* **Styling**: Tailwind CSS & Lucide Icons
+* **State & Routing**: React Router DOM (v7.7)
+* **3D Graphics**: Three.js & React Three Fiber
+* **API Client**: Axios
+* **Real-time**: Socket.io-client
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### 🖼️ UI Walkthrough
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Dashboard | Team Recommendations |
+| --- | --- |
+|  |  |
+| *Browse available events* | *Find compatible members* |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🚀 Getting Started
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clone the repository**:
+```bash
+git clone <your-repo-url>
+cd hackconnect-frontend
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Install dependencies**:
+```bash
+npm install
 
-### Code Splitting
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+3. **Environment Setup**:
+Create a `.env` file in the root directory and add your backend URL:
+```env
+REACT_APP_API_URL=http://localhost:5000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+4. **Run the application**:
+```bash
+npm start
 
-### Advanced Configuration
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
+### 📁 Project Structure Highlights
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* `/src/components`: Reusable UI elements like `StudentCard` and `Robot3D`.
+* `/src/pages`: Main view logic (Auth, Team Maker, Hackathon Details).
+* `/src/services`: API abstraction layers for Auth, Chat, and Hackathons.
+* `/src/contexts`: Global state management for user authentication.
