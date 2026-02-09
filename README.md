@@ -10,6 +10,7 @@ HackConnect is a modern full-stack platform designed to help students and develo
 
 ### 📷 Preview
 <img width="1900" height="860" alt="Screenshot 2026-02-09 121427" src="https://github.com/user-attachments/assets/ef096cce-ff7a-4380-84f0-01fee65e56a7" />
+<img width="1899" height="864" alt="Screenshot 2026-02-09 121507" src="https://github.com/user-attachments/assets/a8b92e5a-528f-44cc-9aac-2925bff1d4f2" />
 <img width="1894" height="858" alt="Screenshot 2026-02-09 121656" src="https://github.com/user-attachments/assets/52cabb03-e8fc-49f7-ba8d-a716890faaa4" />
 <img width="1905" height="865" alt="Screenshot 2026-02-09 121634" src="https://github.com/user-attachments/assets/85cb61b1-1f22-4995-ab0e-22ae0b68969a" />
 <img width="1880" height="861" alt="Screenshot 2026-02-09 121747" src="https://github.com/user-attachments/assets/1e4a670e-a657-45ff-96af-5d62b718c97b" />
