@@ -57,7 +57,8 @@ const UserProfilePage = () => {
       setMessage("Profile updated successfully!");
     } catch (error) {
       console.error("Update failed:", error);
-      setMessage("Failed to update profile. Please try again.");
+      const serverMessage = error.response?.data?.message || error.message;
+      setMessage(`Failed to update profile: ${serverMessage}`);
     }
   };
 
@@ -79,12 +80,44 @@ const UserProfilePage = () => {
     }
   };
 
+  // Handle avatar upload with client-side compression
   const handleAvatarChange = (e) => {
+    setMessage(""); // Clear any previous errors
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, avatar: reader.result }));
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          // Resize logic
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+          const MAX_WIDTH = 400; // Resize to reasonable dimensions
+          const MAX_HEIGHT = 400;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert to base64 JPEG with compression
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+          setFormData((prev) => ({ ...prev, avatar: dataUrl }));
+        };
+        img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     }

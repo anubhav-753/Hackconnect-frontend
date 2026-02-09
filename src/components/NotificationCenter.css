@@ -1,85 +1,315 @@
-.notif-wrapper {
-    position: relative;
+/* Modern Notification Center Styling */
+
+.notification-container {
+  position: relative;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #4b5563;
+  /* Gray-600 */
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.notification-icon:hover {
+  color: #111827;
+  /* Gray-900 */
+  background-color: #f3f4f6;
+  /* Gray-100 */
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #ef4444;
+  /* Red-500 */
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* Dropdown Card */
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  /* Spacing from icon */
+  width: 380px;
+  max-height: 500px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
   }
-  
-  .notif-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #333;
-    font-size: 1.4rem;
-    position: relative;
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
-  
-  .notif-dot {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #ef4444;
+}
+
+.notification-dropdown h3 {
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.notification-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+/* Scrollbar styling */
+.notification-dropdown ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-dropdown ul::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notification-dropdown ul::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 20px;
+}
+
+.no-notif {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* Notification Item */
+.notification-dropdown li {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  gap: 16px;
+  transition: background-color 0.2s ease;
+  align-items: flex-start;
+  position: relative;
+  /* Ensure relative positioning for close button */
+}
+
+.notification-dropdown li:hover {
+  background-color: #f9fafb;
+  /* Gray-50 */
+}
+
+.notification-dropdown li.unread {
+  background-color: #f0f9ff;
+  /* Light Blue tint */
+  position: relative;
+}
+
+.notification-dropdown li.unread::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  /* Adjusted to handle close button positioning */
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #2563eb;
+  /* Blue-600 */
+  border-radius: 50%;
+}
+
+/* Close Button */
+.notif-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  opacity: 0;
+  /* Hidden by default */
+  transition: all 0.2s;
+}
+
+.notification-dropdown li:hover .notif-close-btn {
+  opacity: 1;
+  /* Show on hover */
+}
+
+.notif-close-btn:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+/* Icon Box */
+.notif-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background-color: #f3f4f6;
+}
+
+.notif-icon .text-blue-500 {
+  color: #3b82f6;
+}
+
+/* Connection Request */
+.notif-icon .text-green-500 {
+  color: #22c55e;
+}
+
+/* Accepted */
+.notif-icon .text-yellow-500 {
+  color: #eab308;
+}
+
+/* Warning/Info */
+.notif-icon .text-red-500 {
+  color: #ef4444;
+}
+
+/* Alert */
+
+/* Content */
+.notif-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 15px;
+  /* Space for close button if needed */
+}
+
+.notif-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #374151;
+  /* Gray-700 */
+  line-height: 1.4;
+}
+
+.notif-time {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  /* Gray-400 */
+  margin-top: 2px;
+}
+
+/* Buttons Container */
+.notif-actions {
+  display: flex;
+  gap: 10px;
+  /* Space between buttons */
+  margin-top: 10px;
+}
+
+/* Action Buttons */
+.btn-accept,
+.btn-reject {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-accept {
+  background-color: #2563eb;
+  /* Blue-600 */
+  color: white;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
+}
+
+.btn-accept:hover {
+  background-color: #1d4ed8;
+  /* Blue-700 */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
+}
+
+.btn-accept:active {
+  transform: translateY(0);
+}
+
+.btn-reject {
+  background-color: #f3f4f6;
+  /* Gray-100 */
+  color: #4b5563;
+  /* Gray-600 */
+  border: 1px solid #e5e7eb;
+}
+
+.btn-reject:hover {
+  background-color: #fee2e2;
+  /* Red-100 */
+  color: #ef4444;
+  /* Red-500 */
+  border-color: #fca5a5;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: 300px;
+    right: -100px;
+    /* Adjust if screen too small */
   }
-  
-  .notif-dropdown {
-    position: absolute;
-    right: 0;
-    top: 40px;
-    width: 340px;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 20;
-  }
-  
-  .notif-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-  
-  .mark-read {
-    border: none;
-    background: none;
-    color: #2563eb;
-    font-size: 0.8rem;
-    cursor: pointer;
-  }
-  
-  .notif-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    border-bottom: 1px solid #f1f5f9;
-  }
-  
-  .notif-item.unread {
-    background-color: #f0f7ff;
-  }
-  
-  .notif-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .notif-text p {
-    margin: 0;
-    font-size: 0.9rem;
-  }
-  
-  .notif-text small {
-    color: #737373;
-    font-size: 0.75rem;
-  }
-  
-  .notif-msg {
-    text-align: center;
-    padding: 8px 0;
-    color: #666;
-  }
+}

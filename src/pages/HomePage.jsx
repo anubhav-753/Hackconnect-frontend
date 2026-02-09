@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import "./HomePage.css";
 import TypewriterText from "../components/TypewriterText";
 import ScrollDownIndicator from "../components/ScrollDownIndicator";
-import FeatureCard from "../components/FeatureCard"; // NEW: Import FeatureCard
+import FeatureCard from "../components/FeatureCard";
+import Robot3D from "../components/Robot3D";
 
 function HomePage() {
   const [showButtons, setShowButtons] = useState(false);
@@ -61,10 +62,9 @@ function HomePage() {
           )}
         </div>
 
-        {/* Right side: Placeholder for 3D Visual Object */}
+        {/* Right side: 3D Visual Object */}
         <div className="homepage-visuals">
-          {/* Your 3D object component will go here */}
-          <div className="visuals-placeholder">3D Object Placeholder</div>
+          <Robot3D />
         </div>
 
         {/* Scroll Down Indicator */}

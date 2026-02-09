@@ -1,7 +1,7 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { io } from "socket.io-client";
-import { loginUser, registerUser, getProfile } from "../services/api";
+import api, { loginUser, registerUser, getProfile } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -82,6 +82,12 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  const updateUser = async (updateData) => {
+    const { data } = await api.put("/users/profile", updateData);
+    setUser(data);
+    return data;
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -93,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = { user, token, login, register, logout, loading, socket };
+  const value = { user, token, login, register, logout, loading, socket, updateUser };
 
   return (
     <AuthContext.Provider value={value}>

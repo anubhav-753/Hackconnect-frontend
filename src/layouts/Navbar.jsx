@@ -36,6 +36,9 @@ const Navbar = () => {
             <NavLink to="/teammaker" className="navbar-link">
               Team Maker
             </NavLink>
+            <NavLink to="/chat" className="navbar-link">
+              Chat
+            </NavLink>
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -96,6 +99,13 @@ const Navbar = () => {
               onClick={closeMobileMenu}
             >
               Team Maker
+            </NavLink>
+            <NavLink
+              to="/chat"
+              className="navbar-mobile-link"
+              onClick={closeMobileMenu}
+            >
+              Chat
             </NavLink>
 
             {user && (

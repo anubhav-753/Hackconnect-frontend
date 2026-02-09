@@ -25,6 +25,12 @@ export const getRecommendedStudents = async (filters = {}) => {
   return data;
 };
 
+// Search Users (for chat/connections)
+export const searchUsers = async (query) => {
+  const { data } = await api.get(`/users?search=${query}`);
+  return data;
+};
+
 export const sendConnectionRequest = async (userId) => {
   const { data } = await api.post(`/users/${userId}/request`);
   return data;

@@ -12,6 +12,7 @@ import PublicProfilePage from './pages/PublicProfilePage';  // ✅ Add this impo
 import HackathonListingPage from './pages/HackathonListingPage';
 import HackathonDetailPage from './pages/HackathonDetailPage';
 import TeamMakerPage from './pages/TeamMakerPage';
+import ChatPage from './pages/ChatPage'; // ✅ Add ChatPage import
 import NotFoundPage from './pages/NotFoundPage';
 
 
@@ -24,7 +25,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          
+
           {/* ✅ User’s own profile */}
           <Route path="/profile" element={<UserProfilePage />} />
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/hackathons" element={<HackathonListingPage />} />
           <Route path="/hackathon/:id" element={<HackathonDetailPage />} />
           <Route path="/teammaker" element={<TeamMakerPage />} />
+          <Route path="/chat" element={<ChatPage />} />
 
           {/* Fallback route */}
           <Route path="*" element={<NotFoundPage />} />
