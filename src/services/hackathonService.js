@@ -20,3 +20,7 @@ export const updateHackathon = (id, hackathonData) => {
 export const deleteHackathon = (id) => {
   return api.delete(`/hackathons/${id}`);
 };
+
+export const registerForHackathon = (id) => {
+  return api.post(`/hackathons/${id}/register`);
+};

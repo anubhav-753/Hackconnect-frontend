@@ -169,5 +169,45 @@ button.website-link:disabled {
     background-color: #e5e7eb;
     color: #9ca3af;
     cursor: not-allowed;
+
     border: 1px solid #d1d5db;
+}
+
+.register-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.register-btn.registered {
+    background-color: #10b981;
+    /* Green */
+    cursor: default;
+}
+
+.register-btn:disabled:not(.registered) {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.registration-message {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.registration-message.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.registration-message.error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #ef4444;
 }
