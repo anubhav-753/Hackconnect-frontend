@@ -1,6 +1,5 @@
 // src/pages/HackathonListingPage.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getAllHackathons } from "../services/hackathonService";
 import HackathonCard from "../components/HackathonCard";
 import LoadingSpinner from "../components/LoadingSpinner";
