@@ -1,20 +1,173 @@
-.detail-container { max-width: 1100px; }
-.detail-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #e5e7eb; }
-.detail-title { font-size: 3rem; font-weight: 800; }
-.detail-creator { font-size: 1.125rem; color: #666; margin-top: 0.5rem; }
-.detail-content { display: grid; grid-template-columns: 1fr; gap: 3rem; }
-@media (min-width: 768px) { .detail-content { grid-template-columns: 2fr 1fr; } }
-.main-content .detail-description { font-size: 1.125rem; line-height: 1.7; color: #333; }
-.detail-themes { margin-top: 2rem; }
-.detail-themes h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-.info-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; }
-.info-box h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
-.info-box p { margin-bottom: 1rem; font-size: 1rem; }
-.website-link { width: 100%; text-align: center; display: block; margin-top: 1.5rem; }
-.status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 600; text-transform: capitalize; }
-.status-ongoing { background-color: #dcfce7; color: #166534; }
-.status-upcoming { background-color: #e0e7ff; color: #4f46e5; }
-.creator-actions { margin-top: 2rem; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; }
-.creator-actions h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 700; }
-.edit-btn, .delete-btn { width: 100%; text-align: center; display: block; }
-.delete-btn { margin-top: 0.75rem; }
+.page-section {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+}
+
+.detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.detail-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-title {
+    font-size: 3rem;
+    font-weight: 800;
+}
+
+.detail-creator {
+    font-size: 1.125rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.detail-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .detail-content {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.detail-left-column .detail-description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #333;
+}
+
+.detail-themes {
+    margin-top: 2rem;
+}
+
+.detail-themes h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: inline-block;
+    /* Ensure it renders well */
+    margin-bottom: 1rem;
+}
+
+.status-ongoing {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-upcoming {
+    background-color: #e0e7ff;
+    color: #4f46e5;
+}
+
+.status-past {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.creator-actions {
+    margin-top: 2rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.creator-actions h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.edit-btn,
+.delete-btn {
+    margin-top: 0.75rem;
+}
+
+.card-themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.theme-badge {
+    display: inline-block;
+    background-color: #eff6ff;
+    color: #2563eb;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #bfdbfe;
+    transition: all 0.2s ease;
+}
+
+.theme-badge:hover {
+    background-color: #dbeafe;
+    transform: translateY(-1px);
+}
+
+.info-box {
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.info-box h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: #111827;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 0.75rem;
+}
+
+.info-box p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4b5563;
+}
+
+.website-link {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.website-link:disabled,
+button.website-link:disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border: 1px solid #d1d5db;
+}

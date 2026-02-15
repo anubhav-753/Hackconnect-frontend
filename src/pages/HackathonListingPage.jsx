@@ -61,9 +61,7 @@ const HackathonListingPage = () => {
       <div className="container">
         <div className="page-header">
           <h1 className="page-title">Explore Hackathons</h1>
-          <Link to="/hackathons/new" className="primary-btn">
-            + Post a Hackathon
-          </Link>
+
         </div>
 
         <div className="search-bar">

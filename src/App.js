@@ -33,7 +33,7 @@ function App() {
           <Route path="/profile/:id" element={<PublicProfilePage />} />
 
           <Route path="/hackathons" element={<HackathonListingPage />} />
-          <Route path="/hackathon/:id" element={<HackathonDetailPage />} />
+          <Route path="/hackathons/:id" element={<HackathonDetailPage />} />
           <Route path="/teammaker" element={<TeamMakerPage />} />
           <Route path="/chat" element={<ChatPage />} />
 

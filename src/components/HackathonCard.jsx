@@ -34,7 +34,7 @@ function HackathonCard({ hackathon }) {
       <div className="card-actions">
         <Link
           to={`/hackathons/${hackathon._id}`}
-          className="primary-btn details-btn"
+          className="btn-details"
         >
           View Details
         </Link>
